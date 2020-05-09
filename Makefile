@@ -23,31 +23,33 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 TOBJECTS = $(filter-out $(BUILD_DIR)/$(TARGET).o,$(OBJECTS))
 
 
-all: $(BUILD_DIR)/$(TARGET) Dir
+all: size Dir
 
-$(BUILD_DIR)/$(TARGET): $(OBJECTS) Makefile
-	@echo $(C_SOURCES)
-	@echo -e '\033[1;32mCC\t'$(OBJECTS)' '$@'\033[0m'
-	@$(CC) $(OBJECTS) $(LDFLAGS) $(LIBS) -o $@
+# $(BUILD_DIR)/$(TARGET): $(OBJECTS) Makefile
+# 	@echo $(C_SOURCES)
+# 	@echo -e '\033[1;32mCC\t'$(OBJECTS)' '$@'\033[0m'
+# 	@$(CC) $(OBJECTS) $(LDFLAGS) $(LIBS) -o $@
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	@echo -e '\033[1;32mCC\t'$<'\033[0m'
+	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
 	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 
 
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
-	avr-gcc $(LFLAGS) $@ -o $(BUILD_DIR)/$(TARGET).elf
+	@echo -e '\033[1;32mELF\t'$(OBJECTS)' -> '$@'\033[0m'
+	@avr-gcc $(LFLAGS) $< -o $(BUILD_DIR)/$(TARGET).elf
 
 
 $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
-	avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).eep"
-	avr-objcopy -O ihex -R .eeprom  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).hex"
+	@echo -e '\033[1;32mHEX\t'$<' -> '$@'\033[0m'
+	@avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).eep"
+	@avr-objcopy -O ihex -R .eeprom  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).hex"
 
 
 size: $(BUILD_DIR)/$(TARGET).hex
 	@echo -e '\033[0;36m'
-	@avr-size $(BUILD_DIR)/$(TARGET).elf -C --mcu=$(MCU)
+	@avr-size $(BUILD_DIR)/$(TARGET).elf -C --mcu=ATMega128
 	@echo -e '\033[0m'
 
 
@@ -66,5 +68,5 @@ Dir: BuildDir SrcDir IncDir
 
 
 clean:
-	@rm -rf $(BUILD_DIR)/*
+	@rm -r $(BUILD_DIR)/*
 	@echo -e '\033[0;31mCleaned\033[0m'

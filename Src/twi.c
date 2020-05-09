@@ -21,20 +21,6 @@ uint8_t		_twi_status = 0xFF;														//1 byte
 
 
 
-/*
-* Function: I2C_SetFreq
-* Desc:     Set working frequency of I2C bus
-* Input:    _freq: what frequency set to
-* Output:   none
-*/
-//inline void I2C_SetFreq(uint8_t _freq)
-//{
-//	TWBR = _freq;
-//}
-
-
-
-
 
 
 
@@ -69,16 +55,12 @@ void _shiftLeft_(uint8_t* arr, uint32_t len, uint32_t el)
 */
 void _shiftRight_(uint8_t* arr, uint32_t len, uint32_t el)
 {
-	//cli();									//block interrupts, atomic block
-
-	//for(uint32_t i = len - el; i < len - el; i++)
 	while(len >= el)
 	{
 		arr[len] = arr[len - el];
 		len--;
 	}
 
-	//sei();									//allow interrupts
 }
 
 
@@ -99,9 +81,8 @@ void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		//cli();										//block interrupts, must be atomic
 		addr = (uint8_t)(addr << 1);
-		addr |= mode & 1;
+		addr = (uint8_t)(addr | (mode & 1));
 
 		_twi_usr_packs++;
 		_twi_usr_in_queue[_twi_usr_len++] = addr;	//add addr of slave device to queue
@@ -110,7 +91,6 @@ void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 			_twi_usr_in_queue[_twi_usr_len++] = data[i];
 		}
 		_twi_usr_in_lens[_twi_usr_lens++] = (uint8_t)(len + 1);	//set num of bytes in pack
-		//sei();										//allow interrupts, atomic block ended
 	}
 }
 
@@ -130,7 +110,7 @@ void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
 {
 	addr = (uint8_t)(addr << 1);
-	addr |= mode & 1;
+	addr = (uint8_t)(addr | (mode & 1));
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		_twi_usr_packs++;
@@ -155,16 +135,14 @@ void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
 void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
 {
 	addr = (uint8_t)(addr << 1);
-	addr |= mode & 1;
+	addr = (uint8_t)(addr | (mode & 1));
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		//cli();											//block interrupts, must be atomic
 		_twi_usr_packs++;
 		_twi_usr_in_queue[_twi_usr_len++] = addr;		//add addr of slave device
 		_twi_usr_in_queue[_twi_usr_len++] = data & 0xFF;//,byte to send
 		_twi_usr_in_queue[_twi_usr_len++] = (uint8_t)((data >> 8) & 0xFF);
 		_twi_usr_in_lens[_twi_usr_lens++] = 2;			//				and num of bytes in pack
-		//sei();											//allow interrupts, atomic block ended
 	}
 }
 
@@ -274,20 +252,16 @@ void TWI_start(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		//cli();												//block interrupts, must be atomic
-
 		if(_twi_status != I2C_READ
 			&& _twi_status != I2C_WRITE)
 		{
 			uint8_t bytes = _twi_usr_in_lens[0];				//get num of bytes to send
 			_shiftLeft_(_twi_usr_in_lens, _twi_usr_lens--, 1);	//shift array with lens of packs to left for 1 element
-			//cli();		//TODO: fix
 			for(uint8_t i = 0; i < bytes; i++)
 			{													//iterate "bytes" times and copy package
 				_twi_out_queue[i] = _twi_usr_in_queue[i];
 			}
 			_shiftLeft_(_twi_usr_in_queue, _twi_usr_len, bytes);//remove from user queue
-			//cli();		//TODO: fix
 
 			_twi_usr_len -= bytes;
 			_twi_out_len = bytes;
@@ -295,7 +269,6 @@ void TWI_start(void)
 			_twi_usr_packs--;
 			_TWI_start_();										//kick the TWI machine
 		}
-		//sei();												//allow interrupts, atomic block ended
 	}
 }
 
@@ -313,8 +286,6 @@ void TWI_stop(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		//cli();							//block interrupts, must be atomic
-
 		_TWI_stop_();					//go to standby
 		_twi_status = I2C_STANDBY;
 		_twi_out_len = 0;
@@ -322,26 +293,8 @@ void TWI_stop(void)
 		{
 			TWI_start();					//kick state machine for new start
 		}
-
-		//sei();							//allow interrupts, atomic block ended
 	}
 }
-
-
-
-
-
-
-/*
-*	Function:	twiHadRead
-*	Desc:		If have new bytes to read return 1(t), else 0(f)
-*	Input:		none
-*	Output:		bool
-*/
-//inline bool twiHadRead(void)
-//{
-//	return (_in_len > 0);
-//}
 
 
 
