@@ -4,9 +4,16 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#define bool uint8_t
-#define true 1
-#define false 0
+
+enum Bool
+{
+	True = 1, 
+	False = 0
+};
+
+#define bool enum Bool
+#define true True
+#define false False
 
 #define F_CPU 8000000L
 

@@ -89,10 +89,10 @@ void USART0Print(const char* __data)	//send C-string to USART0
 // }
 
 
-volatile char _inputBuf_[_USART_MAX_BUF_SIZE_];//buffer for input from USART0
-volatile uint8_t _inputBufCounterInput_ = 0;//index of last char placed by system
-volatile uint8_t _inputBufCounterOutput_ = 0;//index of last char gotted by user
-volatile uint8_t _inputBufEmpty_ = true;
+volatile char 		_inputBuf_[_USART_MAX_BUF_SIZE_];//buffer for input from USART0
+volatile uint8_t 	_inputBufCounterInput_ = 0;//index of last char placed by system
+volatile uint8_t 	_inputBufCounterOutput_ = 0;//index of last char gotted by user
+volatile bool 		_inputBufEmpty_ = true;
 
 
 
