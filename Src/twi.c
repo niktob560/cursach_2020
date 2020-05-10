@@ -23,51 +23,6 @@ uint8_t		_twi_status = 0xFF;									/*1 byte*/
 
 
 
-
-/*
-*	Function:	_shiftLeft_
-*	Desc:		Сдвинуть массив влево на N элементов
-*	Input:		arr: 	указатель на массив
-*				len:	длина массива
-*				el:		на сколько сдвинуть
-*	Output:		none
-*/
-void _shiftLeft_(uint8_t* arr, uint32_t len, uint32_t el)
-{
-	for(uint32_t i = 0; i < len - el; i++)
-	{
-		arr[i] = arr[i + el];
-	}
-
-}
-
-
-
-
-
-/*
-*	Function:	_shiftLeft_
-*	Desc:		Сдвинуть массив вправо на N элементов
-*	Input:		arr:	указатель на массив
-*				len: 	длина массива
-*				el:		на сколько сдвинуть
-*	Output:		none
-*/
-void _shiftRight_(uint8_t* arr, uint32_t len, uint32_t el)
-{
-	while(len >= el)
-	{
-		arr[len] = arr[len - el];
-		len--;
-	}
-
-}
-
-
-
-
-
-
 /*
 *	Function:	TWI_addPack
 *	Desc:		Добавить пакет в очередь
@@ -163,7 +118,7 @@ uint8_t TWI_getByte(void)
 	if(_twi_in_len > 0)
 	{
 		uint8_t _buf = _twi_in_queue[0];
-		_shiftLeft_(_twi_in_queue, _twi_in_len--, 1);
+		shiftLeft(_twi_in_queue, _twi_in_len--, 1);
 		return _buf;
 	}
 	else
@@ -256,12 +211,12 @@ void TWI_start(void)
 			&& _twi_status != I2C_WRITE)
 		{
 			uint8_t bytes = _twi_usr_in_lens[0];				/*Получить кол-во байт к отправке*/
-			_shiftLeft_(_twi_usr_in_lens, _twi_usr_lens--, 1);	/*Сдвинуть массив длин пакетов влево на 1 элемент*/
+			shiftLeft(_twi_usr_in_lens, _twi_usr_lens--, 1);	/*Сдвинуть массив длин пакетов влево на 1 элемент*/
 			for(uint8_t i = 0; i < bytes; i++)
 			{													/*Копировать пакет в буффер вывода конечного автомата*/
 				_twi_out_queue[i] = _twi_usr_in_queue[i];
 			}
-			_shiftLeft_(_twi_usr_in_queue, _twi_usr_len, bytes);/*Удалить пакет из пользовательского буффера вывода*/
+			shiftLeft(_twi_usr_in_queue, _twi_usr_len, bytes);/*Удалить пакет из пользовательского буффера вывода*/
 
 			_twi_usr_len -= bytes;
 			_twi_out_len = bytes;

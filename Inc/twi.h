@@ -33,26 +33,6 @@ inline void TWI_setFreq(uint8_t _freq)
 }
 
 /*
-*	Function:	_shiftLeft_
-*	Desc:		Сдвинуть массив влево на N элементов
-*	Input:		arr: 	указатель на массив
-*				len:	длина массива
-*				el:		на сколько сдвинуть
-*	Output:		none
-*/
-void _shiftLeft_(uint8_t* arr, uint32_t len, uint32_t el);
-
-/*
-*	Function:	_shiftLeft_
-*	Desc:		Сдвинуть массив вправо на N элементов
-*	Input:		arr:	указатель на массив
-*				len: 	длина массива
-*				el:		на сколько сдвинуть
-*	Output:		none
-*/
-void _shiftRight_(uint8_t* arr, uint32_t len, uint32_t el);
-
-/*
 *	Function:	TWI_addPack
 *	Desc:		Добавить пакет в очередь
 *	Input:		addr:	адрес устройства
