@@ -1,3 +1,6 @@
+#ifndef __USART_H__
+#define __USART_H__
+
 #include "main.h"
 
 #define USART_TX_BUF_LEN 100
@@ -42,3 +45,5 @@ char USART0Read(void);
 bool USART0Available(void);
 //remove all recieved data
 void USART0Flush(void);
+
+#endif

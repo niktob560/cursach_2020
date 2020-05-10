@@ -1,3 +1,6 @@
+#ifndef __MAIN_H__
+#define __MAIN_H__
+
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -6,3 +9,5 @@
 #define false 0
 
 #define F_CPU 8000000L
+
+#endif

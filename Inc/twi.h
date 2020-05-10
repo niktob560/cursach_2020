@@ -1,3 +1,6 @@
+#ifndef __TWI_H__
+#define __TWI_H__
+
 #include "main.h"
 #include <util/atomic.h>
 
@@ -137,3 +140,5 @@ inline bool TWI_hadRead(void)
 {
 	return (_twi_in_len > 0);
 }
+
+#endif
