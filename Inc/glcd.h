@@ -10,11 +10,10 @@ extern uint8_t*** 	_glcd_gbuf;				/*указатель на текущий ма�
 /*
 * Function: GLCDSetPixel
 * Desc:     Установить пиксель с координатами {x,y} в состояние state
-* Input:    x: x координата пикселя
-*			y: y координата пикселя
+* Input:    coords: координаты вектора
 *			state: в какое состояние установить пиксель
 * Output:   none
 */
-void GLCDSetPixel(uint8_t x, uint8_t y, bool state);
+void GLCDSetPixel(vect coords, bool state);
 
 #endif

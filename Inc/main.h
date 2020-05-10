@@ -11,6 +11,11 @@ enum Bool
 	False = 0
 };
 
+typedef struct 
+{
+	uint8_t x, y;
+} vect;
+
 #define bool enum Bool
 #define true True
 #define false False
