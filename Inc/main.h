@@ -13,7 +13,7 @@ enum Bool
 
 typedef struct 
 {
-	uint8_t x, y;
+	uint8_t a, b;
 } vect;
 
 #define bool enum Bool
