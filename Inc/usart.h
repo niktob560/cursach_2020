@@ -22,28 +22,71 @@
 	
 
 
-//set bit settings of USART, mode on input
-void USART0SetBitSettings(uint8_t __bitness);
-//init function, baudrate on input
-void USART0Begin(uint64_t __baud);
+/*
+ * Function USART0Begin
+ * Desc     Инициализировать USART0
+ * Input    __baud: скорость передачи, бод
+ * Output   none
+*/void USART0Begin(uint64_t __baud);
 
 
-//send one char function
+/*
+ * Function USART0Send
+ * Desc     Отправить байт в USART0
+ * Input    _data: байт к отправке
+ * Output   none
+*/
+/*TODO: const*/
 void USART0Send(char __data);
 
-//send char array function
+/*
+ * Function USART0Print
+ * Desc     Отправить массив байт в USART0
+ * Input    __data: массив байт к отправке
+ * Output   none
+*/
 void USART0Print(const char* __data);
 
+/*
+ * Function USART0Println
+ * Desc     Отправить конец строки в USART0
+ * Input    none
+ * Output   none
+*/
 void USART0PrintNL();
+
+/*
+ * Function USART0Println
+ * Desc     Отправить массив байт и байт конца строки в USART0
+ * Input    __data: массив байт к отправке
+ * Output   none
+*/
 void USART0Println(const char* __data);
 
 
 
-//get recieved data
+/*
+ * Function USART0Read
+ * Desc     Прочитать байт, полученный по USART0
+ * Input    none
+ * Output   Полученный байт
+*/
 char USART0Read(void);
-//get is any data recieved
+
+/*
+ * Function USART0Available
+ * Desc     Проверить получен ли новый байт
+ * Input    none
+ * Output   Получен ли байт
+*/
 bool USART0Available(void);
-//remove all recieved data
+
+/*
+ * Function USART0Flush
+ * Desc     Удалить все пришедшие байты
+ * Input    none
+ * Output   none
+*/
 void USART0Flush(void);
 
 #endif

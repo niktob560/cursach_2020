@@ -6,28 +6,28 @@ uint16_t _usart0_txbuf_len_end = 0;
 
 /*
  * Function USART0Send
- * Desc     Send byte to USART0
- * Input    _data: byte to send
+ * Desc     Отправить байт в USART0
+ * Input    _data: байт к отправке
  * Output   none
 */
-void USART0Send(char __data)			//send 1 byte to USART0
+/*TODO: const*/
+void USART0Send(char __data)
 {
-	while(!(UCSR0A & (1 << UDRE0)));//TODO: send to buf and get with interrupt
+	while(!(UCSR0A & (1 << UDRE0)));
 	UDR0 = (uint8_t)__data;
 	/*
-	 * The transmit buffer can only be written
-	 * when the UDRE0 Flag in the UCSR0A Register is set
-	 * from atmega328p datasheet
+	 * Буффер передатчика может быть записан только
+	 * когда UDRE0 флаг регистра UCSR0A установлен
 	 */
 }
 
 /*
  * Function USART0Print
- * Desc     Send byte array to USART0
- * Input    __data: byte array to send
+ * Desc     Отправить массив байт в USART0
+ * Input    __data: массив байт к отправке
  * Output   none
 */
-void USART0Print(const char* __data)	//send C-string to USART0
+void USART0Print(const char* __data)
 {
 	while(*__data != 0x00)
 	{
@@ -38,7 +38,7 @@ void USART0Print(const char* __data)	//send C-string to USART0
 
 /*
  * Function USART0Println
- * Desc     Send EndOfLine to USART0
+ * Desc     Отправить конец строки в USART0
  * Input    none
  * Output   none
 */
@@ -50,8 +50,8 @@ void USART0Print(const char* __data)	//send C-string to USART0
 
 /*
  * Function USART0Println
- * Desc     send char array and EndOfLine to USART0
- * Input    __data: char array to send
+ * Desc     Отправить массив байт и байт конца строки в USART0
+ * Input    __data: массив байт к отправке
  * Output   none
 */
  void USART0Println(const char* __data)
@@ -60,138 +60,98 @@ void USART0Print(const char* __data)	//send C-string to USART0
 	USART0Print(EOL);
 }
 
-/*
- * Function ISR(USART0_TX_vect)
- * Desc     Interrupt handler for vector USART0_TX
- * Input    interrupt vector
- * Output   none
-*/
-// #ifdef USART0_TX_vect
-// ISR(USART0_TX_vect)//interrupt handler called aftar transmitting data
-// #else
-// ISR(USART_TX_vect)//interrupt handler called aftar transmitting data
-// #endif
-// {
-// 	// if(_usart0_txbuf_len_start != _usart0_txbuf_len_end)
-// 	// {
-// 	// 	UDR0 = _usart0_txbuf[_usart0_txbuf_len_start++];
-// 	// }
-// 	// else
-// 	// {
-// 	// 	_usart0_txbuf_len_start = 0;
-// 	// 	_usart0_txbuf_len_end = 0;
-// 	// }
-// 	/*#ifdef INTERRUPT_CUSTOMFUNC_USART0_TX
-// 		if(funcs[INTERRUPT_CUSTOMFUNC_USART0_TX] != NULL)
-// 			funcs[INTERRUPT_CUSTOMFUNC_USART0_TX]();		//call custom function
-// 	#endif
-// 	*/
-// }
 
-
-volatile char 		_inputBuf_[_USART_MAX_BUF_SIZE_];//buffer for input from USART0
-volatile uint8_t 	_inputBufCounterInput_ = 0;//index of last char placed by system
-volatile uint8_t 	_inputBufCounterOutput_ = 0;//index of last char gotted by user
+volatile char 		_inputBuf_[_USART_MAX_BUF_SIZE_] = {0};	/*буффер для полученных по USART0 данных*/
+volatile uint8_t 	_inputBufCounterInput_ = 0;				/*индекс последнего сохраненного системой байта*/
+volatile uint8_t 	_inputBufCounterOutput_ = 0;			/*индекс последнего сохраненного пользователем ф-ций байта*/
 volatile bool 		_inputBufEmpty_ = true;
 
 
 
 /*
  * Function ISR(USART0_RX_vect)
- * Desc     Interrupt handler for vector USART0_RX
- * Input    interrupt vector
- * Output   none
+ * Desc     Обработчик прерывания для вектора USART0_RX
 */
-ISR(USART0_RX_vect)		   //interrupt handler called after recieving data
+ISR(USART0_RX_vect)
 {
-	if(_inputBufCounterInput_ >= _USART_MAX_BUF_SIZE_	//check that counters are in borders of buf size
-			|| _inputBufEmpty_)					//or buf empty
+	if(_inputBufCounterInput_ >= _USART_MAX_BUF_SIZE_	/*проверить выход счетчика за границы буффера*/
+			|| _inputBufEmpty_)							/*или буффер на пустоту*/
 	{
-		_inputBufCounterInput_ = 0;				//start writing from zero
+		_inputBufCounterInput_ = 0;						/*начать запись с начала*/
 	}
 
-	_inputBuf_[_inputBufCounterInput_] = (char)UDR0;	//save data
+	_inputBuf_[_inputBufCounterInput_] = (char)UDR0;	/*сохранить данные*/
 
-	if(_inputBuf_[_inputBufCounterInput_] != '\0')//check for garbage
+	if(_inputBuf_[_inputBufCounterInput_] != '\0')		/*проверить на мусор*/
 	{
-		_inputBufEmpty_ = false;				//set empty flag down
-		_inputBufCounterInput_++;				//go next index for writing
+		_inputBufEmpty_ = false;						/*снять флаг пустоты*/
+		_inputBufCounterInput_++;						/*переместиться на следующий индекс*/
 	}
-
-
-	// interrupt::call(interrupt::USART0_RX);
 }
 
 /*
  * Function USART0Read
- * Desc     Read byte recieved from USART0
+ * Desc     Прочитать байт, полученный по USART0
  * Input    none
- * Output   Recieved byte
+ * Output   Полученный байт
 */
-char USART0Read(void)//get data from input USART0 buffer
+char USART0Read(void)
 {
-	if(_inputBufCounterOutput_ >= _USART_MAX_BUF_SIZE_)	//check that counters are in borders of buf size
+	char __ret = '\0';
+	if(_inputBufCounterOutput_ >= _USART_MAX_BUF_SIZE_)		/*проверить выход счетчика за границы буффера*/
 	{
-		_inputBufCounterOutput_ = 0;				//start from zero
-		_inputBufEmpty_ = true;						//with empty buf
-		return '\0';								//for bypassing -Wreturn-type
+		_inputBufCounterOutput_ = 0;						/*начать с нуля*/
+		_inputBufEmpty_ = true;								/*с пустым буффером*/
 	}
-	else if(_inputBufCounterOutput_ >= _inputBufCounterInput_)//check that counter for output not overtaked input
+	else if(_inputBufCounterOutput_ >= _inputBufCounterInput_)/*проверить что счетчик конца не опережает счетчик начала*/
 	{
-		char ___ret = _inputBuf_[_inputBufCounterOutput_];//save data to temp var
-		_inputBufCounterOutput_ = 0;						//set counters to zero
+		__ret = _inputBuf_[_inputBufCounterOutput_];
+		_inputBufCounterOutput_ = 0;						/*обнулить счетчики*/
 		_inputBufCounterInput_  = 0;
-		_inputBufEmpty_ = true;								//empty buf
-		return ___ret;									//return data
+		_inputBufEmpty_ = true;								/*опустошить буффер*/
 	}
-	else if(!_inputBufEmpty_)								//if have data
+	else if(!_inputBufEmpty_)								/*если буффер не пуст*/
 	{
-		char ___ret = _inputBuf_[_inputBufCounterOutput_];//save data to temp var
-		_inputBufCounterOutput_++;							//go to next index for reading
-		if(_inputBufCounterOutput_ >= _USART_MAX_BUF_SIZE_)		//check that counter is in borders of buf size
+		__ret = _inputBuf_[_inputBufCounterOutput_];
+		_inputBufCounterOutput_++;							/*переместиться на следующий индекс для чтения*/
+		if(_inputBufCounterOutput_ >= _USART_MAX_BUF_SIZE_)	/*проверить что счетчик не вышел за границы*/
 		{
-			_inputBufCounterOutput_ = 0;					//start from zero
-			_inputBufEmpty_ = true;							//empty buf
+			_inputBufCounterOutput_ = 0;					/*начать с нуля*/
+			_inputBufEmpty_ = true;							/*опустошить буффер*/
 		}
-		return ___ret;									//return data
 	}
-	else
-	{
-		return '\0';					//ERROR
-	}
+	return __ret;
 }
 
 /*
  * Function USART0Available
- * Desc     Return is recieved new byte
+ * Desc     Проверить получен ли новый байт
  * Input    none
- * Output   Have new state
+ * Output   Получен ли байт
 */
 bool USART0Available(void)
 {
-	if(_inputBufCounterOutput_ >= _inputBufCounterInput_	//check that counter for output not overtaked input
+	if(_inputBufCounterOutput_ >= _inputBufCounterInput_	/*проверить что счетчики не выходят за границы*/
 	|| _inputBufCounterOutput_ >= _USART_MAX_BUF_SIZE_)
 	{
 		_inputBufCounterOutput_ = 0;
 		_inputBufCounterInput_  = 0;
-		_inputBufEmpty_ = true;								//empty buf
+		_inputBufEmpty_ = true;								/*опустошить буффер*/
 	}
 	return !_inputBufEmpty_;
 }
 
 /*
  * Function USART0Flush
- * Desc     Clear USART0 registers
+ * Desc     Удалить все пришедшие байты
  * Input    none
  * Output   none
 */
 void USART0Flush(void)
 {
-	volatile uint8_t __temp = 0;
-	__temp = __temp;//for bypassing -Wunused-but-set-variable
-	while(UCSR0A & (1 << RXC0))
+	while(UCSR0A & (1 << RXC0))		/*пока существуют пришедшие байты*/
 	{
-		__temp = UDR0;
+		_inputBuf_[0] = (char)UDR0; /*для освобождения состояния аппарата USART нужно произвести чтение из UDR0*/
 		_inputBufCounterInput_ = 0;
 		_inputBufCounterInput_  = 0;
 		_inputBufEmpty_ = true;
@@ -199,49 +159,37 @@ void USART0Flush(void)
 }
 
 /*
- * Function USART0SetBitSettings
- * Desc     Set USART0 packet parameters
- * Input    __bitness: mode for transmitting
- * Output   none
-*/
-void USART0SetBitSettings(uint8_t __bitness)
-{
-	UCSR0C = __bitness;
-}
-
-/*
  * Function USART0Begin
- * Desc     Initialize USART0
- * Input    __baud: baudrate for transmitting
+ * Desc     Инициализировать USART0
+ * Input    __baud: скорость передачи, бод
  * Output   none
 */
 void USART0Begin(uint64_t __baud)
 {
-		for(int i = 0; i < _USART_MAX_BUF_SIZE_; i++)//flush data array
+		for(int i = 0; i < _USART_MAX_BUF_SIZE_; i++)		/*очистить буффер*/
 		{
 			_inputBuf_[i] = '\0';
 		}
 
-	UCSR0A = 1 <<  U2X0;									 //double speed mode
-	uint16_t __baudPrescaller =  (uint16_t)((F_CPU / (8 * __baud))) - 1;//((Clock rate / (16 * baudrate))) - 1
-														   //for U2X0 mode:
-														  //((Clock rate / (8 * baudrate))) - 1
-		if (((F_CPU == 16000000UL) && (__baud == 57600)) || (__baudPrescaller > 4095))	//disable double speed mode
-		{																				//if prescaller is too high
-			UCSR0A = 0;
-			__baudPrescaller = (uint16_t)(F_CPU / (16 * __baud));
-		}
+	UCSR0A = 1 <<  U2X0;									/*режим double speed*/
+	uint16_t __baudPrescaller =  (uint16_t)((F_CPU / (8 * __baud))) - 1;//((частота / (16 * скорость))) - 1
+														   /*для режима U2X0:
+														  	((частота / (8 * скорость))) - 1*/
+	if (((F_CPU == 16000000UL) && (__baud == 57600)) || (__baudPrescaller > 4095))	/*выключить режим double speed*/
+	{																				/*если прескейлер слишком большой*/
+		UCSR0A = 0;
+		__baudPrescaller = (uint16_t)(F_CPU / (16 * __baud));
+	}
 
-	UBRR0L = (uint8_t)(__baudPrescaller);//set low bits of baud prescaller
-	UBRR0H = (uint8_t)(__baudPrescaller >> 8);//set high bits of baud prescaller
+	UBRR0L = (uint8_t)(__baudPrescaller);
+	UBRR0H = (uint8_t)(__baudPrescaller >> 8);
 
-		UCSR0B |= (1 << RXEN0) | (1 << RXCIE0);//enable recieve and interrupt on recieve
+		UCSR0B |= (1 << RXEN0) | (1 << RXCIE0);
 
-		UCSR0B |= (1 << TXEN0) | (1 << TXCIE0);//enable trancieve and interrupt on trancieve
-											 //TODO: changable bit size
-	UCSR0C = (1 << UCSZ00) | (1 << UCSZ01); //set USART0 Character Size to 8 bit
+		// UCSR0B |= (1 << TXEN0) | (1 << TXCIE0);
+	UCSR0C = (1 << UCSZ00) | (1 << UCSZ01); 	//размер символа в USART0 установлен в 8 бит
 	/*
-	 * Character Size table:
+	 * Таблица размеров символов:
 	 * 000 5-bit
 	 * 001 6-bit
 	 * 010 7-bit
