@@ -61,7 +61,7 @@ IncDir:
 Dir: BuildDir SrcDir IncDir
 
 
-
+.PHONY: clean
 clean:
-	@rm -r $(BUILD_DIR)/*
+	@rm -rf $(BUILD_DIR)/*
 	@echo -e '\033[0;31mCleaned\033[0m'

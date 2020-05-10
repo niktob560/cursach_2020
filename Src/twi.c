@@ -1,20 +1,20 @@
 #include "twi.h"
 
-uint16_t	_twi_out_len = 0;														//2 bytes
-uint8_t		_twi_out_curr = 0;														//1 byte
-uint16_t	_twi_in_len = 0;														//2 bytes
-uint16_t	_twi_usr_len = 0;														//2 bytes
-uint8_t		_twi_usr_packs = 0;														//1 byte
-uint8_t		_twi_usr_lens = 0;														//1 byte
-uint8_t 	_twi_out_queue[_TWI_OUT_BUF_LEN];							//_OUT_BUF_LEN bytes
-uint8_t 	_twi_in_queue[_TWI_IN_BUF_LEN];								//_IN_BUF_LEN bytes
-uint8_t 	_twi_usr_in_queue[_TWI_USR_IN_BUF_LEN];				//_USR_IN_BUF_LEN bytes
-uint8_t		_twi_usr_in_lens[_TWI_USR_IN_BUF_LEN];				//_USR_IN_BUF_LEN bytes
+uint16_t	_twi_out_len = 0;									/*2 bytes*/
+uint8_t		_twi_out_curr = 0;									/*1 byte*/
+uint16_t	_twi_in_len = 0;									/*2 bytes*/
+uint16_t	_twi_usr_len = 0;									/*2 bytes*/
+uint8_t		_twi_usr_packs = 0;									/*1 byte*/
+uint8_t		_twi_usr_lens = 0;									/*1 byte*/
+uint8_t 	_twi_out_queue[_TWI_OUT_BUF_LEN];					/*_OUT_BUF_LEN bytes*/
+uint8_t 	_twi_in_queue[_TWI_IN_BUF_LEN];						/*_IN_BUF_LEN bytes*/
+uint8_t 	_twi_usr_in_queue[_TWI_USR_IN_BUF_LEN];				/*_USR_IN_BUF_LEN bytes*/
+uint8_t		_twi_usr_in_lens[_TWI_USR_IN_BUF_LEN];				/*_USR_IN_BUF_LEN bytes*/
 
-uint8_t		_twi_status = 0xFF;														//1 byte
-//--------------------------------------------------------------------------------------------
-//																											10 + _OUT_BUF_LEN + _IN_BUF_LEN + 2*_USR_IN_BUF_LEN bytes
-//																											190 here
+uint8_t		_twi_status = 0xFF;									/*1 byte*/
+/*------------------------------------------------------------------------------------------------------------------------*/
+/*																10 + _OUT_BUF_LEN + _IN_BUF_LEN + 2*_USR_IN_BUF_LEN bytes*/
+/*																190 here*/
 
 
 
@@ -26,11 +26,10 @@ uint8_t		_twi_status = 0xFF;														//1 byte
 
 /*
 *	Function:	_shiftLeft_
-*	Desc:		Shift some array to left on N elements
-*	Input:		void* arr: 		ptr to array shift to
-				uint8_t size:	size of element
-				uint32_t len: 	length of array
-				uint32_t el:	num of elements
+*	Desc:		Сдвинуть массив влево на N элементов
+*	Input:		arr: 	указатель на массив
+*				len:	длина массива
+*				el:		на сколько сдвинуть
 *	Output:		none
 */
 void _shiftLeft_(uint8_t* arr, uint32_t len, uint32_t el)
@@ -47,10 +46,11 @@ void _shiftLeft_(uint8_t* arr, uint32_t len, uint32_t el)
 
 
 /*
-*	Function:	_shiftRight_
-*	Desc:		Shift some array to right on N elements
-*	Input:		void* arr: ptr to array shift to
-				uint32_t len: length of array
+*	Function:	_shiftLeft_
+*	Desc:		Сдвинуть массив вправо на N элементов
+*	Input:		arr:	указатель на массив
+*				len: 	длина массива
+*				el:		на сколько сдвинуть
 *	Output:		none
 */
 void _shiftRight_(uint8_t* arr, uint32_t len, uint32_t el)
@@ -70,11 +70,11 @@ void _shiftRight_(uint8_t* arr, uint32_t len, uint32_t el)
 
 /*
 *	Function:	TWI_addPack
-*	Desc:		Add package to user queue
-*	Input:		uint8_t  addr:			what addr of slave set to
-				const uint8_t* data:	pointer to data array
-				uint8_t len:			num of bytes in data array
-				uint8_t mode:			read or write mode use to
+*	Desc:		Добавить пакет в очередь
+*	Input:		addr:	адрес устройства
+*				data:	указатель на массив с данными
+*				len:	кол-во байт в массиве данных
+*				mode:	режим чтения или записи
 *	Output:		none
 */
 void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
@@ -85,12 +85,12 @@ void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 		addr = (uint8_t)(addr | (mode & 1));
 
 		_twi_usr_packs++;
-		_twi_usr_in_queue[_twi_usr_len++] = addr;	//add addr of slave device to queue
-		for(int i = 0; i < len; i++)				//iterate in data array and add all bytes in usr queue
+		_twi_usr_in_queue[_twi_usr_len++] = addr;	/*Установить адрес внешнего устройства*/
+		for(int i = 0; i < len; i++)				/*Переместить массив данных в пакет*/
 		{
 			_twi_usr_in_queue[_twi_usr_len++] = data[i];
 		}
-		_twi_usr_in_lens[_twi_usr_lens++] = (uint8_t)(len + 1);	//set num of bytes in pack
+		_twi_usr_in_lens[_twi_usr_lens++] = (uint8_t)(len + 1);	/*Установить размер пакета*/
 	}
 }
 
@@ -101,10 +101,10 @@ void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 
 /*
 *	Function:	TWI_addPackSingle
-*	Desc:		Add single-byte package to user queue
-*	Input:		uint8_t  addr:		what addr of slave set to
-				uint8_t data:		byte send to
-				uint8_t mode:		read or write mode use to
+*	Desc:		Добавить пакет с одним байтом данных в очередь
+*	Input:		addr:		адрес устройства
+*				data:		байт данных
+*				mode:		режим чтения или записи
 *	Output:		none
 */
 void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
@@ -114,11 +114,11 @@ void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		_twi_usr_packs++;
-		_twi_usr_in_queue[_twi_usr_len] = addr;	//add addr of slave device
+		_twi_usr_in_queue[_twi_usr_len] = addr;	/*Установить адрес внешнего устройства*/
 		_twi_usr_len++;
-		_twi_usr_in_queue[_twi_usr_len] = data;	//				,byte to send
+		_twi_usr_in_queue[_twi_usr_len] = data;	/*Байты для отправки*/
 		_twi_usr_len++;
-		_twi_usr_in_lens[_twi_usr_lens] = 2;		//				and num of bytes in pack
+		_twi_usr_in_lens[_twi_usr_lens] = 2;	/*И размер пакета*/
 		_twi_usr_lens++;
 	}
 }
@@ -126,10 +126,10 @@ void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
 
 /*
 *	Function:	TWI_addPackDouble
-*	Desc:		Add double-byte package to user queue
-*	Input:		uint8_t  addr:		what addr of slave set to
-				uint16_t data:		byte send to
-				uint8_t mode:		read or write mode use to
+*	Desc:		Добавить пакет с двумя байтами данных в очередь
+*	Input:		addr:		адрес устройства
+*				data:		2 байта
+*				mode:		режим чтения или записи
 *	Output:		none
 */
 void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
@@ -139,10 +139,11 @@ void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		_twi_usr_packs++;
-		_twi_usr_in_queue[_twi_usr_len++] = addr;		//add addr of slave device
-		_twi_usr_in_queue[_twi_usr_len++] = data & 0xFF;//,byte to send
+		_twi_usr_in_queue[_twi_usr_len++] = addr;		/*Установить адрес внешнего устройства*/
+		_twi_usr_in_queue[_twi_usr_len++] = data & 0xFF;/*Байты для отправки*/
 		_twi_usr_in_queue[_twi_usr_len++] = (uint8_t)((data >> 8) & 0xFF);
-		_twi_usr_in_lens[_twi_usr_lens++] = 2;			//				and num of bytes in pack
+		/*NOTE: why 2 when 3?*/
+		_twi_usr_in_lens[_twi_usr_lens++] = 2;			/*И размер пакета*/
 	}
 }
 
@@ -153,13 +154,12 @@ void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
 
 /*
 *	Function:	TWI_getByte
-*	Desc:		Get byte from input array(if have)
+*	Desc:		Получить байт из очереди ввода(если имеется)
 *	Input:		none
-*	Output:		uint8_t: readed byte (0xFF if nothing to read)
+*	Output:		прочитанный байт (0xFF если нечего читать)
 */
 uint8_t TWI_getByte(void)
 {
-	//USART0Println("reading byte from buf...");
 	if(_twi_in_len > 0)
 	{
 		uint8_t _buf = _twi_in_queue[0];
@@ -168,7 +168,7 @@ uint8_t TWI_getByte(void)
 	}
 	else
 	{
-		return 0xFF;//nothing to read
+		return 0xFF;	/*нечего читать*/
 	}
 }
 
@@ -179,24 +179,24 @@ uint8_t TWI_getByte(void)
 
 /*
 *	Function:	 _TWI_reply_
-*	Desc:		Send reply to TWI (ACK or NACK)
-*	Input:		uint8_t _ack: send ACK or NACK
+*	Desc:		Отправить ответ в TWI (ACK или NACK)
+*	Input:		_ack: ACK или NACK
 *	Output:		none
 */
 void _TWI_reply_(enum Responce _ack)
 {
 	if(_ack == ACK)
 	{
-		TWCR 	= (1 << TWEN) 	//enable TWI
-				| (1 << TWIE) 	//set interrupt flag
-				| (1 << TWINT) 	//allow interrupts
-				| (1 << TWEA);	//allow ACK
+		TWCR 	= (1 << TWEN) 	/*Включить TWI*/
+				| (1 << TWIE) 	/*Установить флаг прерывания*/
+				| (1 << TWINT) 	/*Разрешить прерывания*/
+				| (1 << TWEA);	/*Разрешить ACK*/
 	}
 	else
 	{
-		TWCR 	= (1 << TWEN) 	//enable TWI
-				| (1 << TWIE) 	//set interrupt flag
-				| (1 << TWINT);	//allow interrupts
+		TWCR 	= (1 << TWEN) 	/*Включить TWI*/
+				| (1 << TWIE) 	/*Установить флаг прерывания*/
+				| (1 << TWINT);	/*Разрешить прерывания*/
 	}
 }
 
@@ -206,16 +206,16 @@ void _TWI_reply_(enum Responce _ack)
 
 /*
 *	Function:	_TWI_start_
-*	Desc:		Start TWI for state machine
+*	Desc:		Запустить TWI
 *	Input:		none
 *	Output:		none
 */
 inline void _TWI_start_(void)
 {
-	TWCR 	= (1 << TWSTA)	//forming start
-			| (1 << TWINT)	//set interrupt flag
-			| (1 << TWEN) 	//enable TWI
-			| (1 << TWIE);	//allow interrupts
+	TWCR 	= (1 << TWSTA)	/*Сформировать START*/
+			| (1 << TWINT)	/*Установить флаг прерывания*/
+			| (1 << TWEN) 	/*Включить TWI*/
+			| (1 << TWIE);	/*Разрешить прерывания*/
 }
 
 
@@ -225,16 +225,16 @@ inline void _TWI_start_(void)
 
 /*
 *	Function:	_TWI_stop_
-*	Desc:		Stop TWI for state machine
+*	Desc:		Остановить TWI
 *	Input:		none
 *	Output:		none
 */
 inline void _TWI_stop_(void)
 {
-	TWCR 	= (1 << TWEN)	//enable TWI
-			| (1 << TWIE)	//allow interrupts
-			| (1 << TWINT)	//set interrupt flag
-			| (1 << TWSTO);	//forming stop
+	TWCR 	= (1 << TWEN)	/*Включить TWI*/
+			| (1 << TWIE)	/*Разрешить прерывания*/
+			| (1 << TWINT)	/*Установить флаг прерывания*/
+			| (1 << TWSTO);	/*Сформировать STOP*/
 }
 
 
@@ -244,7 +244,7 @@ inline void _TWI_stop_(void)
 
 /*
 *	Function:	TWI_start
-*	Desc:		Start TWI state machine
+*	Desc:		Запустить конечный автомат TWI
 *	Input:		none
 *	Output:		none
 */
@@ -255,19 +255,19 @@ void TWI_start(void)
 		if(_twi_status != I2C_READ
 			&& _twi_status != I2C_WRITE)
 		{
-			uint8_t bytes = _twi_usr_in_lens[0];				//get num of bytes to send
-			_shiftLeft_(_twi_usr_in_lens, _twi_usr_lens--, 1);	//shift array with lens of packs to left for 1 element
+			uint8_t bytes = _twi_usr_in_lens[0];				/*Получить кол-во байт к отправке*/
+			_shiftLeft_(_twi_usr_in_lens, _twi_usr_lens--, 1);	/*Сдвинуть массив длин пакетов влево на 1 элемент*/
 			for(uint8_t i = 0; i < bytes; i++)
-			{													//iterate "bytes" times and copy package
+			{													/*Копировать пакет в буффер вывода конечного автомата*/
 				_twi_out_queue[i] = _twi_usr_in_queue[i];
 			}
-			_shiftLeft_(_twi_usr_in_queue, _twi_usr_len, bytes);//remove from user queue
+			_shiftLeft_(_twi_usr_in_queue, _twi_usr_len, bytes);/*Удалить пакет из пользовательского буффера вывода*/
 
 			_twi_usr_len -= bytes;
 			_twi_out_len = bytes;
-			_twi_status = (_twi_out_queue[0] & 1)? I2C_READ : I2C_WRITE;//save status
+			_twi_status = (_twi_out_queue[0] & 1)? I2C_READ : I2C_WRITE;/*Сохранить состояние*/
 			_twi_usr_packs--;
-			_TWI_start_();										//kick the TWI machine
+			_TWI_start_();										/*Запустить TWI*/
 		}
 	}
 }
@@ -278,7 +278,7 @@ void TWI_start(void)
 
 /*
 *	Function:	TWI_stop
-*	Desc:		Stop TWI state machine
+*	Desc:		Остановить конечный автомат TWI
 *	Input:		none
 *	Output:		none
 */
@@ -286,12 +286,13 @@ void TWI_stop(void)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		_TWI_stop_();					//go to standby
+		_TWI_stop_();					/*Перейти к ожиданию*/
 		_twi_status = I2C_STANDBY;
 		_twi_out_len = 0;
 		if(_twi_usr_packs > 0)
 		{
-			TWI_start();					//kick state machine for new start
+			TWI_start();				/*	Запустить конечный автомат
+											если ещё есть пакеты*/
 		}
 	}
 }
@@ -300,11 +301,11 @@ void TWI_stop(void)
 
 
 /*
-*	Function: 	write
-*	Desc:		Write a byte to reg on slave device
-*	Input:		uint8_t addr: slave device addr
-				uint8_t reg: what reg write to
-				uint8_t data: what write to
+*	Function: 	TWI_write
+*	Desc:		Записать байт в регистр на внешнем устройстве
+*	Input:		addr: адрес устройства
+*				reg: регистр для записи
+*				data: что записывать
 *	Output:		none
 */
 void TWI_write(uint8_t addr, uint8_t reg, uint8_t data)
@@ -316,10 +317,10 @@ void TWI_write(uint8_t addr, uint8_t reg, uint8_t data)
 
 /*
 *	Function: 	TWI_reqRead
-*	Desc:		Request a byte from reg on slave device
-*	Input:		uint8_t addr: slave device addr
-				uint8_t reg: what reg read from
-				uint8_t len: len of data in bytes
+*	Desc:		Запросить чтение из регистра внешнего устройства
+*	Input:		addr: адрес устройства
+*				reg: какой регистр читать
+*				len: длина в байтах
 *	Output:		none
 */
 void TWI_reqRead(uint8_t addr, uint8_t reg, uint8_t len)
@@ -339,28 +340,28 @@ ISR(TWI_vect)
 {
 	switch(TWSR)
 	{
-		case 0x00:												//bus fail
+		case 0x00:												/*Ошибка шины*/
 		{
 			_twi_status = I2C_FAIL;
 			TWI_stop();
 			break;
 		}
-		case 0x08:												//start
+		case 0x08:												/*Старт*/
 		{
 			_twi_out_curr = 0;
 			TWDR = _twi_out_queue[_twi_out_curr++];
 			_TWI_reply_(ACK);
 			break;
 		}
-		case 0x10:												//reStart
+		case 0x10:												/*Повторный старт*/
 		{
 			_twi_out_curr = 0;
 			TWDR = _twi_out_queue[_twi_out_curr++];
 			_TWI_reply_(ACK);
 			break;
 		}
-		case 0x28:												//byte+ACK
-		case 0x18:												//SLA+W+ACK
+		case 0x28:												/*byte+ACK*/
+		case 0x18:												/*SLA+W+ACK*/
 		{
 			if(_twi_out_curr < _twi_out_len)
 			{
@@ -375,45 +376,31 @@ ISR(TWI_vect)
 				}
 				else
 				{
-					//_TWI_start_();
 					_twi_status = I2C_STANDBY;
 					TWI_start();
 				}
-				//_TWI_reply_(NACK);
 			}
 			break;
 		}
-		case 0x20:												//SLA+W+NACK
-		{
-				//handling of error
-			if(_twi_status == I2C_READ) //TODO: TEST IT!
-			{
-				//for(uint8_t i = 0; i < _out_queue[1]; i++)
-					//_in_queue[_in_len++] = -1;
-			}
-			else if((_twi_usr_in_queue[0] & 1) == 0)
-			{
-				//USART0Println("bypassing errors on try-to-read");
-				//for(uint8_t i = 0; i < _usr_in_queue[1]; i++)
-				//	_in_queue[_in_len++] = -1;
-			}
-			_twi_status = I2C_FAIL;
-			TWI_stop();
-			break;
-		}
-		case 0x30:												//byte+NACK
+		case 0x20:												/*SLA+W+NACK*/
 		{
 			_twi_status = I2C_FAIL;
 			TWI_stop();
 			break;
 		}
-		case 0x38:												//collision
+		case 0x30:												/*byte+NACK*/
 		{
 			_twi_status = I2C_FAIL;
 			TWI_stop();
 			break;
 		}
-		case 0x40:												//SLA+R+ACK
+		case 0x38:												/*Коллизия с другим master*/
+		{
+			_twi_status = I2C_FAIL;
+			TWI_stop();
+			break;
+		}
+		case 0x40:												/*SLA+R+ACK*/
 		{
 			if(_twi_out_queue[1] <= 1)
 				_TWI_reply_(NACK);
@@ -421,13 +408,13 @@ ISR(TWI_vect)
 				_TWI_reply_(ACK);
 			break;
 		}
-		case 0x48:												//SLA+R+NACK
+		case 0x48:												/*SLA+R+NACK*/
 		{
 			_twi_status = I2C_FAIL;
 			TWI_stop();
 			break;
 		}
-		case 0x50:												//recive byte
+		case 0x50:												/*Получить байт*/
 		{
 			_twi_in_queue[_twi_in_len++] = TWDR;
 			_twi_out_queue[1]--;
@@ -437,7 +424,7 @@ ISR(TWI_vect)
 				_TWI_reply_(ACK);
 			break;
 		}
-		case 0x58:												//recive byte+NACK
+		case 0x58:												/*получить байт и NACK*/
 		{
 			_twi_in_queue[_twi_in_len++] = TWDR;
 			_twi_status = I2C_STANDBY;

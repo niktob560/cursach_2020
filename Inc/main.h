@@ -8,7 +8,7 @@
 enum Bool
 {
 	True = 1, 
-	False = 0
+	False = 0,
 };
 
 typedef struct 
@@ -25,3 +25,4 @@ typedef struct
 int main(void);
 
 #endif
+
