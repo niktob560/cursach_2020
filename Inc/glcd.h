@@ -3,9 +3,18 @@
 
 #include "main.h"
 
-extern uint8_t 		_glcd_gbuf_0[16][8],	/*нулевой массив битов */
-					_glcd_gbuf_1[16][8];	/*первый мссив битов*/
-extern uint8_t*** 	_glcd_gbuf;				/*указатель на текущий массив битов для двойной буфферизации*/
+#define GLCD_WIDTH 128
+#define GLCD_WIDTH_DWORD (GLCD_WIDTH / 8)
+#define GLCD_HEIGHT 64
+#define GLCD_HEIGHT_DWORD (GLCD_HEIGHT / 8)
+
+					/*нулевой массив битов*/
+extern uint8_t 		_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT],	
+					/*первый мссив битов*/
+					_glcd_gbuf_1[GLCD_WIDTH_DWORD][GLCD_HEIGHT];	
+					/*указатель на текущий массив битов для двойной буфферизации*/
+extern uint8_t*** 	_glcd_gbuf;				
+
 
 /*
 * Function: GLCDSetPixel
@@ -14,6 +23,14 @@ extern uint8_t*** 	_glcd_gbuf;				/*указатель на текущий ма�
 *			state: в какое состояние установить пиксель
 * Output:   none
 */
-void GLCDSetPixel(vect coords, bool state);
+void GLCDSetPixel(const vect coords, const bool state);
+
+/*
+* Function: GLCDSwitchBuffers
+* Desc:     поменять буфферы битов местами
+* Input:    none
+* Output:   none
+*/
+void GLCDSwitchBuffers(void);
 
 #endif
