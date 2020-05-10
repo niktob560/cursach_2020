@@ -1,9 +1,9 @@
 #include "glcd.h"
 
 			/*нулевой массив битов*/
-uint8_t 	_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT],	
+uint8_t 	_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {{0}},
 			/*первый мссив битов*/
-			_glcd_gbuf_1[GLCD_WIDTH_DWORD][GLCD_HEIGHT];	
+			_glcd_gbuf_1[GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {{0}};
 			/*указатель на текущий массив битов для двойной буфферизации*/
 uint8_t*** 	_glcd_gbuf = (uint8_t***)&_glcd_gbuf_0;	/*указатель на текущий массив битов для двойной буфферизации*/
 
