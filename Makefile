@@ -7,6 +7,7 @@ LIBS=
 STANDART=c99
 OPTIMIZE=-Os
 TARGET=main
+MCU=atmega128
 
 C_SOURCES=$(wildcard $(SRC_DIR)/*.c)
 
@@ -14,21 +15,15 @@ C_INCLUDES=-I$(INC_DIR)/
 
 C_DEFS=
 
-CFLAGS=$(C_DEFS) $(C_INCLUDES) $(OPTIMIZE) --std=$(STANDART) -Wno-write-strings -Wcast-align -Wcast-qual -Wconversion -Wduplicated-branches -Wduplicated-cond -Wfloat-equal -Wlogical-op -Wredundant-decls -Wsign-conversion -Werror -Werror -Wall -Wextra -Wpedantic -pedantic-errors 
-LFLAGS=-Wall -Wextra -lm $(LIBS)
+CFLAGS=$(C_DEFS) $(C_INCLUDES) $(OPTIMIZE) --std=$(STANDART) -Wno-write-strings -Wcast-align -Wcast-qual -Wconversion -Wduplicated-branches -Wduplicated-cond -Wfloat-equal -Wlogical-op -Wredundant-decls -Wsign-conversion -Werror -Werror -Wall -Wextra -Wpedantic -pedantic-errors -mmcu=$(MCU)
+LFLAGS=$(OPTIMIZE) -Wno-write-strings -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wduplicated-branches -Wduplicated-cond -Wextra-semi -Wfloat-equal -Wlogical-op -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wsign-conversion -Wsign-promo -Wall -Wextra -Wpedantic -pedantic-errors -flto -fuse-linker-plugin -ffunction-sections -fdata-sections -Wl,--gc-sections -mmcu=$(MCU) -lm $(LIBS)
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
 
-TOBJECTS = $(filter-out $(BUILD_DIR)/$(TARGET).o,$(OBJECTS))
 
 
 all: size Dir
-
-# $(BUILD_DIR)/$(TARGET): $(OBJECTS) Makefile
-# 	@echo $(C_SOURCES)
-# 	@echo -e '\033[1;32mCC\t'$(OBJECTS)' '$@'\033[0m'
-# 	@$(CC) $(OBJECTS) $(LDFLAGS) $(LIBS) -o $@
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
@@ -42,14 +37,14 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
 
 
 $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
-	@echo -e '\033[1;32mHEX\t'$<' -> '$@'\033[0m'
+	@echo -e '\033[1;32mHEX\t'$<'\t->\t'$@'\033[0m'
 	@avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).eep"
 	@avr-objcopy -O ihex -R .eeprom  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).hex"
 
 
 size: $(BUILD_DIR)/$(TARGET).hex
 	@echo -e '\033[0;36m'
-	@avr-size $(BUILD_DIR)/$(TARGET).elf -C --mcu=ATMega128
+	@avr-size $(BUILD_DIR)/$(TARGET).elf -C --mcu=$(MCU)
 	@echo -e '\033[0m'
 
 
