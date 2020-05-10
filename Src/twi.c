@@ -97,8 +97,8 @@ void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
 		_twi_usr_in_queue[_twi_usr_len++] = addr;		/*Установить адрес внешнего устройства*/
 		_twi_usr_in_queue[_twi_usr_len++] = data & 0xFF;/*Байты для отправки*/
 		_twi_usr_in_queue[_twi_usr_len++] = (uint8_t)((data >> 8) & 0xFF);
-		/*NOTE: why 2 when 3?*/
-		_twi_usr_in_lens[_twi_usr_lens++] = 2;			/*И размер пакета*/
+		/*TODO: test!!!*/
+		_twi_usr_in_lens[_twi_usr_lens++] = 3;			/*И размер пакета*/
 	}
 }
 
