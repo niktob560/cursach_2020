@@ -22,4 +22,6 @@ typedef struct
 
 #define F_CPU 8000000L
 
+int main(void);
+
 #endif
