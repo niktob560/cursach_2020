@@ -1,5 +1,5 @@
 #ifndef __USART_H__
-#define __USART_H__
+#define __USART_H__ 1
 
 #include "main.h"
 

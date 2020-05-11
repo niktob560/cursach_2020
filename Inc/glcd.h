@@ -1,5 +1,5 @@
 #ifndef __GLCD_H__
-#define __GLCD_H__
+#define __GLCD_H__ 1
 
 #include <main.h>
 #include <util/atomic.h>

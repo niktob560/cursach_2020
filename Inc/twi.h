@@ -1,5 +1,5 @@
 #ifndef __TWI_H__
-#define __TWI_H__
+#define __TWI_H__ 1
 
 #include <main.h>
 #include <util/atomic.h>
