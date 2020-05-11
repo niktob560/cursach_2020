@@ -69,3 +69,27 @@ void GLCDDrawSymbol(const vect coords, const char c)
 {
 	GLCDDrawPixmap(coords, (vect){1, 8}, (const uint8_t**)&Font8x8[(int)c]);
 }
+
+/*
+* Function: GLCDDrawText
+* Desc:     Нарисовать текст на текущем полотне
+* Input:    coords: координаты левого верхнего угла текста
+*			text:	строка
+* Output:   none
+*/
+void GLCDDrawText(const vect coords, const char* text)
+{
+	vect pointerCoords = coords;
+	while(*text)
+	{
+		GLCDDrawSymbol(pointerCoords, *text);
+		if(*text != '\n')
+			pointerCoords.a = (uint8_t)(pointerCoords.a + 8);
+		else
+		{
+			pointerCoords.a = coords.a;
+			pointerCoords.b = (uint8_t)(pointerCoords.b + 8);
+		}
+		text++;
+	}
+}
