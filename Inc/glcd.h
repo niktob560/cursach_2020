@@ -35,6 +35,16 @@ void GLCDSetPixel(const vect coords, const bool state);
 void GLCDSwitchBuffers(void);
 
 /*
+* Function: GLCDDrawPixmap
+* Desc:     Нарисовать картинку на текущем полотне
+* Input:    coords: координаты левого верхнего угла
+*			size: 	размер картинки
+*			pixmap: указатель на картинку
+* Output:   none
+*/
+void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap);
+
+/*
 * Function: GLCDDrawSymbol
 * Desc:     Нарисовать символ на текущем полотне
 * Input:    coords: координаты левого верхнего угла символа
