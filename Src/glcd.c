@@ -1,41 +1,20 @@
 #include "glcd.h"
-
-			/*нулевой массив битов*/
-uint8_t 	_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {{0}},
-			/*первый мссив битов*/
-			_glcd_gbuf_1[GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {{0}};
-			/*указатель на текущий массив битов для двойной буфферизации*/
-uint8_t*** 	_glcd_gbuf = (uint8_t***)&_glcd_gbuf_0;	/*указатель на текущий массив битов для двойной буфферизации*/
+#include "font.h"
 
 
 
 /*
-* Function: GLCDSetPixel
-* Desc:     Установить пиксель с координатами {x,y} в состояние state
+* Function: GLCDSet8Pixels
+* Desc:     Установить 8 пикселей с координатами {x,y}
 * Input:    coords: координаты вектора
-*			state: в какое состояние установить пиксель
+*			pixels: пиксели
 * Output:   none
 */
-void GLCDSetPixel(const vect coords, const bool state)
+void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 {
-	const uint8_t 	byteOffset = coords.a % 8;
-	uint8_t 		*saved = _glcd_gbuf[coords.a / 8][coords.b];
-	*saved = setBit(*saved, byteOffset, state);
-}
-
-
-/*
-* Function: GLCDSwapBuffers
-* Desc:     поменять буфферы битов местами
-* Input:    none
-* Output:   none
-*/
-void GLCDSwapBuffers(void)
-{
-	if(_glcd_gbuf == (uint8_t***)&_glcd_gbuf_0)
-		_glcd_gbuf = (uint8_t***)&_glcd_gbuf_1;
-	else
-		_glcd_gbuf = (uint8_t***)&_glcd_gbuf_0;
+	GLCDSetX(coords.a / 8);
+	GLCDSetY(coords.b);
+	GLCDWriteData(pixels);
 }
 
 
@@ -51,13 +30,12 @@ void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap)
 {
 	for(uint8_t x_px = 0; x_px < size.a * 8; x_px++)
 	{
-		const uint8_t 	x_byte = x_px / 8,
-						x_byte_offset = (uint8_t)(x_px - x_byte);
+		const uint8_t 	x_byte = x_px / 8;
 		for(uint8_t y_px = 0; y_px < size.b; y_px++)
 		{
-			GLCDSetPixel((const vect){	(uint8_t)(coords.a + x_px), 
-										(uint8_t)(coords.b + y_px)}, 
-							getBit(pixmap[x_byte][y_px], x_byte_offset));
+			GLCDSet8Pixels((const vect){	(uint8_t)(coords.a + x_px), 
+											(uint8_t)(coords.b + y_px)}, 
+											pixmap[x_byte][y_px]);
 		}
 	}
 }
@@ -167,28 +145,5 @@ void GLCDWriteData(const uint8_t data)
 		GLCD_DPORT = data;
 		_delay_us(150);
 		GLCD_DPORT = 0;
-	}
-}
-
-
-/*
-* Function: GLCDDrawScren
-* Desc:     Отобразить графический буффер на экран
-* Input:    none
-* Output:   none
-*/
-void GLCDDrawScren(void)
-{
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		for(uint8_t i = 0; i < 64; i++)
-		{
-			GLCDSetY(i);
-			for(uint8_t j = 0; j < 8; j++)
-			{
-				GLCDSetX(j);
-				GLCDWriteData(*_glcd_gbuf[j][i]);
-			}
-		}
 	}
 }

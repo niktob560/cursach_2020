@@ -2,7 +2,6 @@
 #define __GLCD_H__
 
 #include "main.h"
-#include "font.h"
 #include <util/atomic.h>
 #include <util/delay.h>
 
@@ -23,30 +22,16 @@
 			/*порт данных*/
 #define GLCD_DPORT  PORTA
 
-					/*нулевой массив битов*/
-extern uint8_t 		_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT],	
-					/*первый мссив битов*/
-					_glcd_gbuf_1[GLCD_WIDTH_DWORD][GLCD_HEIGHT];	
-					/*указатель на текущий массив битов для двойной буфферизации*/
-extern uint8_t*** 	_glcd_gbuf;				
 
 
 /*
-* Function: GLCDSetPixel
-* Desc:     Установить пиксель с координатами {x,y} в состояние state
+* Function: GLCDSet8Pixels
+* Desc:     Установить 8 пикселей с координатами {x,y}
 * Input:    coords: координаты вектора
-*			state: в какое состояние установить пиксель
+*			pixels: пиксели
 * Output:   none
 */
-void GLCDSetPixel(const vect coords, const bool state);
-
-/*
-* Function: GLCDSwapBuffers
-* Desc:     Поменять буфферы битов местами
-* Input:    none
-* Output:   none
-*/
-void GLCDSwapBuffers(void);
+void GLCDSet8Pixels(const vect coords, const uint8_t pixels);
 
 /*
 * Function: GLCDDrawPixmap
@@ -125,13 +110,5 @@ void GLCDSetY(const uint8_t y);
 * Output:   none
 */
 void GLCDWriteData(const uint8_t data);
-
-/*
-* Function: GLCDDrawScren
-* Desc:     Отобразить графический буффер на экран
-* Input:    none
-* Output:   none
-*/
-void GLCDDrawScren(void);
 
 #endif

@@ -1,5 +1,4 @@
 #include "main.h"
-#include "font.h"
 #include "glcd.h"
 #include "usart.h"
 #include "twi.h"
@@ -9,9 +8,11 @@
 
 int main()
 {
+	sei();
+	GLCDOn();
 	while(1)
 	{
-
+		GLCDDrawSymbol((vect){0, 0}, 'A');
 	}
     return 0;
 }
