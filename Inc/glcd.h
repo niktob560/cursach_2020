@@ -3,11 +3,24 @@
 
 #include "main.h"
 #include "font.h"
+#include <util/atomic.h>
 
 #define GLCD_WIDTH 128
 #define GLCD_WIDTH_DWORD (GLCD_WIDTH / 8)
 #define GLCD_HEIGHT 64
 #define GLCD_HEIGHT_DWORD (GLCD_HEIGHT / 8)
+
+#define GLCD_CS1 	PE2
+#define GLCD_CS2 	PE3
+			/*RS=D/I*/
+#define GLCD_RS  	PE4
+#define GLCD_RW  	PE5
+#define GLCD_E  	PE6
+#define GLCD_RST  	PE7
+			/*порт управления*/
+#define GLCD_SPORT	PORTE
+			/*порт данных*/
+#define GLCD_DPORT  PORTA
 
 					/*нулевой массив битов*/
 extern uint8_t 		_glcd_gbuf_0[GLCD_WIDTH_DWORD][GLCD_HEIGHT],	
