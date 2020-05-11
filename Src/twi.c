@@ -26,7 +26,7 @@ uint8_t		_twi_status = 0xFF;									/*1 byte*/
 *				mode:	режим чтения или записи
 *	Output:		none
 */
-void TWIAddPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
+void TWIAddPack(uint8_t addr, const uint8_t* data, const uint8_t len, const uint8_t mode)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
@@ -51,7 +51,7 @@ void TWIAddPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode)
 *				mode:		режим чтения или записи
 *	Output:		none
 */
-void TWIAddPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
+void TWIAddPackSingle(uint8_t addr, const uint8_t data, const uint8_t mode)
 {
 	addr = (uint8_t)(addr << 1);
 	addr = (uint8_t)(addr | (mode & 1));
@@ -77,7 +77,7 @@ void TWIAddPackSingle(uint8_t addr, uint8_t data, uint8_t mode)
 *				mode:		режим чтения или записи
 *	Output:		none
 */
-void TWIAddPackDouble(uint8_t addr, uint16_t data, uint8_t mode)
+void TWIAddPackDouble(uint8_t addr, const uint16_t data, const uint8_t mode)
 {
 	addr = (uint8_t)(addr << 1);
 	addr = (uint8_t)(addr | (mode & 1));
@@ -213,7 +213,7 @@ void TWIStop(void)
 *				data: что записывать
 *	Output:		none
 */
-void TWIWrite(uint8_t addr, uint8_t reg, uint8_t data)
+void TWIWrite(const uint8_t addr, const uint8_t reg, const uint8_t data)
 {
 	TWIAddPackDouble(addr, (uint16_t)((reg << 8) | data), I2C_WRITE);
 	TWIStart();
@@ -228,7 +228,7 @@ void TWIWrite(uint8_t addr, uint8_t reg, uint8_t data)
 *				len: длина в байтах
 *	Output:		none
 */
- void TWIReqRead(uint8_t addr, uint8_t reg, uint8_t len)
+ void TWIReqRead(const uint8_t addr, const uint8_t reg, const uint8_t len)
 {
 	TWIAddPackSingle(addr, reg, I2C_WRITE);
 	TWIAddPackSingle(addr, len, I2C_READ);
