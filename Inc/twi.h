@@ -22,18 +22,18 @@ extern uint16_t _twi_out_len;
 
 
 /*
-* Function: TWI_setFreq
+* Function:	TWISetFreq
 * Desc:     Установить рабочую частоту шины I2C
 * Input:    _freq: какую частоту установить
 * Output:   none
 */
-inline void TWI_setFreq(uint8_t _freq)
+inline void	TWISetFreq(uint8_t _freq)
 {
 	TWBR = _freq;
 }
 
 /*
-*	Function:	TWI_addPack
+*	Function:	TWIAddPack
 *	Desc:		Добавить пакет в очередь
 *	Input:		addr:	адрес устройства
 *				data:	указатель на массив с данными
@@ -41,82 +41,82 @@ inline void TWI_setFreq(uint8_t _freq)
 *				mode:	режим чтения или записи
 *	Output:		none
 */
-void TWI_addPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode);
+void	TWIAddPack(uint8_t addr, const uint8_t* data, uint8_t len, uint8_t mode);
 
 /*
-*	Function:	TWI_addPackSingle
+*	Function:	TWIAddPackSingle
 *	Desc:		Добавить пакет с одним байтом данных в очередь
 *	Input:		addr:		адрес устройства
 *				data:		байт данных
 *				mode:		режим чтения или записи
 *	Output:		none
 */
-void TWI_addPackSingle(uint8_t addr, uint8_t data, uint8_t mode);
+void	TWIAddPackSingle(uint8_t addr, uint8_t data, uint8_t mode);
 
 /*
-*	Function:	TWI_addPackDouble
+*	Function:	TWIAddPackDouble
 *	Desc:		Добавить пакет с двумя байтами данных в очередь
 *	Input:		addr:		адрес устройства
 *				data:		2 байта
 *				mode:		режим чтения или записи
 *	Output:		none
 */
-void TWI_addPackDouble(uint8_t addr, uint16_t data, uint8_t mode);
+void	TWIAddPackDouble(uint8_t addr, uint16_t data, uint8_t mode);
 
 /*
-*	Function:	TWI_getByte
+*	Function:	TWIGetByte
 *	Desc:		Получить байт из очереди ввода(если имеется)
 *	Input:		none
 *	Output:		прочитанный байт (0xFF если нечего читать)
 */
-uint8_t TWI_getByte(void);
+uint8_t	TWIGetByte(void);
 
 /*
-*	Function: 	TWI_write
+*	Function: 	TWIWrite
 *	Desc:		Записать байт в регистр на внешнем устройстве
 *	Input:		addr: адрес устройства
 *				reg: регистр для записи
 *				data: что записывать
 *	Output:		none
 */
-void TWI_write(uint8_t addr, uint8_t reg, uint8_t data);
+void	TWIWrite(uint8_t addr, uint8_t reg, uint8_t data);
 
 
 /*
-*	Function: 	TWI_reqRead
+*	Function: 	TWIReqRead
 *	Desc:		Запросить чтение из регистра внешнего устройства
 *	Input:		addr: адрес устройства
 *				reg: какой регистр читать
 *				len: длина в байтах
 *	Output:		none
 */
-void TWI_reqRead(uint8_t addr, uint8_t reg, uint8_t len);
+void	TWIReqRead(uint8_t addr, uint8_t reg, uint8_t len);
 
 
 /*
-*	Function:	TWI_start
+*	Function:	TWIStart
 *	Desc:		Запустить конечный автомат TWI
 *	Input:		none
 *	Output:		none
 */
-void TWI_start(void);
+void	TWIStart(void);
 
 /*
-*	Function:	TWI_stop
+*	Function:	TWIStop
 *	Desc:		Остановить конечный автомат TWI
 *	Input:		none
 *	Output:		none
 */
-void TWI_stop(void);
+void	TWIStop(void);
 
 
 /*
-*	Function:	TWI_hadRead
+*	Function:	TWIHadRead
 *	Desc:		Есть ли что читать
 *	Input:		none
 *	Output:		bool
 */
-inline bool TWI_hadRead(void)
+inline bool	TWIHadRead(void)
 {
 	return (_twi_in_len > 0);
 }
