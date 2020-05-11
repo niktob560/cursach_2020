@@ -35,3 +35,23 @@ void GLCDSwitchBuffers(void)
 	else
 		_glcd_gbuf = (uint8_t***)&_glcd_gbuf_0;
 }
+
+
+
+/*
+* Function: GLCDDrawSymbol
+* Desc:     Нарисовать символ на текущем полотне
+* Input:    coords: координаты левого верхнего угла символа
+*			c:	символ
+* Output:   none
+*/
+void GLCDDrawSymbol(const vect coords, const char c)
+{
+	for(uint8_t i = 0; i < 8; i++)
+	{
+		for (uint8_t j = 0; j < 8; ++j)
+		{
+			*_glcd_gbuf[coords.a / 8][coords.b + i] = setBit(*_glcd_gbuf[coords.a / 8][coords.b + i], j, getBit((uint8_t)c, j));
+		}
+	}
+}

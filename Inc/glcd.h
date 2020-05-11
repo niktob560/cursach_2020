@@ -28,10 +28,39 @@ void GLCDSetPixel(const vect coords, const bool state);
 
 /*
 * Function: GLCDSwitchBuffers
-* Desc:     поменять буфферы битов местами
+* Desc:     Поменять буфферы битов местами
 * Input:    none
 * Output:   none
 */
 void GLCDSwitchBuffers(void);
+
+/*
+* Function: GLCDDrawSymbol
+* Desc:     Нарисовать символ на текущем полотне
+* Input:    coords: координаты левого верхнего угла символа
+*			c:	символ
+* Output:   none
+*/
+void GLCDDrawSymbol(const vect coords, const char c);
+
+/*
+* Function: GLCDDrawText
+* Desc:     Нарисовать текст на текущем полотне
+* Input:    coords: координаты левого верхнего угла текста
+*			text:	строка
+* Output:   none
+*/
+void GLCDDrawText(const vect coords, const char* text);
+
+/*
+* Function: GLCDDrawTextScaled
+* Desc:     Нарисовать текст на текущем полотне
+* Input:    coords: координаты левого верхнего угла текста
+*			scaleFactor: размер увеличения текста
+*			text:	строка
+* Output:   none
+*/
+void GLCDDrawTextScaled(const vect coords, uint8_t scaleFactor, const char* text);
+
 
 #endif

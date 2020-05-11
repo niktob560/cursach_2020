@@ -1,9 +1,19 @@
 #include "main.h"
+#include "font.h"
+#include "glcd.h"
+#include "usart.h"
+#include "twi.h"
+
+
+
 
 int main()
 {
-	int a = 0;
-    return a;
+	while(1)
+	{
+
+	}
+    return 0;
 }
 
 
@@ -27,7 +37,6 @@ void shiftLeft(uint8_t* arr, uint32_t len, uint32_t el)
 	{
 		arr[i] = arr[i + el];
 	}
-
 }
 
 
@@ -47,5 +56,4 @@ void shiftRight(uint8_t* arr, uint32_t len, uint32_t el)
 		arr[len] = arr[len - el];
 		len--;
 	}
-
 }
