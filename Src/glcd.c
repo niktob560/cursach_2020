@@ -177,5 +177,4 @@ void GLCDDrawScren(void)
 			GLCDWriteData(*_glcd_gbuf[j][i]);
 		}
 	}
-	GLCDSwapBuffers();
 }
