@@ -41,12 +41,12 @@ extern uint8_t*** 	_glcd_gbuf;
 void GLCDSetPixel(const vect coords, const bool state);
 
 /*
-* Function: GLCDSwitchBuffers
+* Function: GLCDSwapBuffers
 * Desc:     Поменять буфферы битов местами
 * Input:    none
 * Output:   none
 */
-void GLCDSwitchBuffers(void);
+void GLCDSwapBuffers(void);
 
 /*
 * Function: GLCDDrawPixmap

@@ -25,12 +25,12 @@ void GLCDSetPixel(const vect coords, const bool state)
 
 
 /*
-* Function: GLCDSwitchBuffers
+* Function: GLCDSwapBuffers
 * Desc:     поменять буфферы битов местами
 * Input:    none
 * Output:   none
 */
-void GLCDSwitchBuffers(void)
+void GLCDSwapBuffers(void)
 {
 	if(_glcd_gbuf == (uint8_t***)&_glcd_gbuf_0)
 		_glcd_gbuf = (uint8_t***)&_glcd_gbuf_1;
@@ -177,5 +177,5 @@ void GLCDDrawScren(void)
 			GLCDWriteData(*_glcd_gbuf[j][i]);
 		}
 	}
-	GLCDSwitchBuffers();
+	GLCDSwapBuffers();
 }
