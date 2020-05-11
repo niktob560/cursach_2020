@@ -108,10 +108,13 @@ void GLCDDrawText(const vect coords, const char* text)
 */
 void GLCDOn()
 {
-	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-	GLCD_DPORT = (0 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
-	_delay_ms(1);
-	GLCD_DPORT = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+		GLCD_DPORT = (0 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
+		_delay_ms(1);
+		GLCD_DPORT = 0;
+	}
 }
 
 
@@ -123,10 +126,13 @@ void GLCDOn()
 */
 void GLCDSetX(const uint8_t x)
 {
-	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-	GLCD_DPORT = (1 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | x;
-	_delay_us(140);
-	GLCD_DPORT = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+		GLCD_DPORT = (1 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | x;
+		_delay_us(140);
+		GLCD_DPORT = 0;
+	}
 }
 
 /*
@@ -137,10 +143,13 @@ void GLCDSetX(const uint8_t x)
 */
 void GLCDSetY(const uint8_t y)
 {
-	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-	GLCD_DPORT = (0 << 7) | (1 << 6) | y;
-	_delay_us(140);
-	GLCD_DPORT = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+		GLCD_DPORT = (0 << 7) | (1 << 6) | y;
+		_delay_us(140);
+		GLCD_DPORT = 0;
+	}
 }
 
 /*
@@ -151,11 +160,14 @@ void GLCDSetY(const uint8_t y)
 */
 void GLCDWriteData(const uint8_t data)
 {
-	turnPortOn(&GLCD_SPORT, 1 << GLCD_RS);
-	turnPortOff(&GLCD_SPORT, 1 << GLCD_RW);
-	GLCD_DPORT = data;
-	_delay_us(150);
-	GLCD_DPORT = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		turnPortOn(&GLCD_SPORT, 1 << GLCD_RS);
+		turnPortOff(&GLCD_SPORT, 1 << GLCD_RW);
+		GLCD_DPORT = data;
+		_delay_us(150);
+		GLCD_DPORT = 0;
+	}
 }
 
 
@@ -167,14 +179,16 @@ void GLCDWriteData(const uint8_t data)
 */
 void GLCDDrawScren(void)
 {
-
-	for(uint8_t i = 0; i < 64; i++)
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		GLCDSetY(i);
-		for(uint8_t j = 0; j < 8; j++)
+		for(uint8_t i = 0; i < 64; i++)
 		{
-			GLCDSetX(j);
-			GLCDWriteData(*_glcd_gbuf[j][i]);
+			GLCDSetY(i);
+			for(uint8_t j = 0; j < 8; j++)
+			{
+				GLCDSetX(j);
+				GLCDWriteData(*_glcd_gbuf[j][i]);
+			}
 		}
 	}
 }
