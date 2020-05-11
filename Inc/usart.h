@@ -3,8 +3,7 @@
 
 #include "main.h"
 
-#define USART_TX_BUF_LEN 100
-#define _USART_MAX_BUF_SIZE_ 254
+#define USART_TX_BUF_LEN 64
 
 
 #ifndef DEC

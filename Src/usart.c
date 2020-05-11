@@ -1,5 +1,7 @@
 #include "usart.h"
 
+#define _USART_MAX_BUF_SIZE_ USART_TX_BUF_LEN
+
 char _usart0_txbuf [USART_TX_BUF_LEN];
 uint16_t _usart0_txbuf_len_start = 0;
 uint16_t _usart0_txbuf_len_end = 0;
