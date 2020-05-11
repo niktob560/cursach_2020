@@ -25,6 +25,16 @@ typedef struct
 int main(void);
 
 
+inline bool getBit(uint8_t byte, uint8_t i)
+{
+	return (byte & (1 << i))? true : false;
+}
+
+
+inline uint8_t setBit(uint8_t base, uint8_t i, bool state)
+{
+	return (uint8_t)((base & ~(1 << i)) | (1 << state));
+}
 
 
 
