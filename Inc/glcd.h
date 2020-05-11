@@ -2,6 +2,7 @@
 #define __GLCD_H__
 
 #include "main.h"
+#include "font.h"
 
 #define GLCD_WIDTH 128
 #define GLCD_WIDTH_DWORD (GLCD_WIDTH / 8)
