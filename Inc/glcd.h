@@ -126,5 +126,12 @@ void GLCDSetY(const uint8_t y);
 */
 void GLCDWriteData(const uint8_t data);
 
+/*
+* Function: GLCDDrawScren
+* Desc:     Отобразить графический буффер на экран
+* Input:    none
+* Output:   none
+*/
+void GLCDDrawScren(void);
 
 #endif

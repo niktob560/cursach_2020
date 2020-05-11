@@ -157,3 +157,25 @@ void GLCDWriteData(const uint8_t data)
 	_delay_us(150);
 	GLCD_DPORT = 0;
 }
+
+
+/*
+* Function: GLCDDrawScren
+* Desc:     Отобразить графический буффер на экран
+* Input:    none
+* Output:   none
+*/
+void GLCDDrawScren(void)
+{
+
+	for(uint8_t i = 0; i < 64; i++)
+	{
+		GLCDSetY(i);
+		for(uint8_t j = 0; j < 8; j++)
+		{
+			GLCDSetX(j);
+			GLCDWriteData(*_glcd_gbuf[j][i]);
+		}
+	}
+	GLCDSwitchBuffers();
+}
