@@ -118,6 +118,13 @@ void GLCDSetX(const uint8_t x);
 */
 void GLCDSetY(const uint8_t y);
 
+/*
+* Function: GLCDWriteData
+* Desc:     Записать в память данные
+* Input:    data: данные
+* Output:   none
+*/
+void GLCDWriteData(const uint8_t data);
 
 
 #endif

@@ -142,3 +142,18 @@ void GLCDSetY(const uint8_t y)
 	_delay_us(140);
 	GLCD_DPORT = 0;
 }
+
+/*
+* Function: GLCDWriteData
+* Desc:     Записать в память данные
+* Input:    data: данные
+* Output:   none
+*/
+void GLCDWriteData(const uint8_t data)
+{
+	turnPortOn(&GLCD_SPORT, 1 << GLCD_RS);
+	turnPortOff(&GLCD_SPORT, 1 << GLCD_RW);
+	GLCD_DPORT = data;
+	_delay_us(150);
+	GLCD_DPORT = 0;
+}
