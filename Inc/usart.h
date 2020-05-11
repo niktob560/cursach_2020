@@ -27,7 +27,7 @@
  * Desc     Инициализировать USART0
  * Input    __baud: скорость передачи, бод
  * Output   none
-*/void USART0Begin(uint64_t __baud);
+*/void USART0Begin(const uint64_t __baud);
 
 
 /*
@@ -36,8 +36,7 @@
  * Input    _data: байт к отправке
  * Output   none
 */
-/*TODO: const*/
-void USART0Send(char __data);
+void USART0Send(const char __data);
 
 /*
  * Function USART0Print

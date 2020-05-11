@@ -10,8 +10,7 @@ uint16_t _usart0_txbuf_len_end = 0;
  * Input    _data: байт к отправке
  * Output   none
 */
-/*TODO: const*/
-void USART0Send(char __data)
+void USART0Send(const char __data)
 {
 	while(!(UCSR0A & (1 << UDRE0)));
 	UDR0 = (uint8_t)__data;
@@ -164,7 +163,7 @@ void USART0Flush(void)
  * Input    __baud: скорость передачи, бод
  * Output   none
 */
-void USART0Begin(uint64_t __baud)
+void USART0Begin(const uint64_t __baud)
 {
 		for(int i = 0; i < _USART_MAX_BUF_SIZE_; i++)		/*очистить буффер*/
 		{
