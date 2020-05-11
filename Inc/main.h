@@ -37,6 +37,22 @@ inline uint8_t setBit(uint8_t base, uint8_t i, bool state)
 }
 
 
+inline void turnPortOn(uint8_t* port, uint8_t mask)
+{
+	*port |= mask;
+}
+
+inline void turnPortOff(uint8_t* port, uint8_t mask)
+{
+	*port &= (uint8_t)~mask;
+}
+
+
+inline void togglePort(uint8_t* port, uint8_t mask)
+{
+	*port ^= mask;
+}
+
 
 
 
