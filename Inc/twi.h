@@ -1,7 +1,7 @@
 #ifndef __TWI_H__
 #define __TWI_H__
 
-#include "main.h"
+#include <main.h>
 #include <util/atomic.h>
 
 enum Responce { ACK = 1, NACK = 0 };

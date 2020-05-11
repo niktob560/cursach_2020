@@ -1,7 +1,7 @@
 #ifndef __GLCD_H__
 #define __GLCD_H__
 
-#include "main.h"
+#include <main.h>
 #include <util/atomic.h>
 #include <util/delay.h>
 

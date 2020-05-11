@@ -2,8 +2,7 @@
 #define __FONT_H__
 
 
-#include "main.h"
-#include <stddef.h>
+#include <main.h>
 #include <avr/pgmspace.h>
 
 static const uint8_t Font8x8[256][8] PROGMEM = 
