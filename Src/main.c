@@ -8,8 +8,12 @@
 
 int main()
 {
+	DDRE = 0xFF;
+	DDRA = 0xFF;
 	sei();
 	GLCDOn();
+	TWISetFreq(0x40);
+
 	while(1)
 	{
 		GLCDDrawSymbol((vect){0, 0}, 'A');

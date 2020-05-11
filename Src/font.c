@@ -11,3 +11,12 @@
 // 		}
 // 	}
 // }
+
+
+void FontGetPixmap(uint8_t* target[8], const char c)
+{
+	for(uint8_t i = 0; i < 8; i++)
+	{
+		*target[i] = pgm_read_byte(&(Font8x8[(int)c][i]));
+	}
+}
