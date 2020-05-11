@@ -113,3 +113,32 @@ void GLCDOn()
 	_delay_ms(1);
 	GLCD_DPORT = 0;
 }
+
+
+/*
+* Function: GLCDSetX
+* Desc:     Записать в регистр координаты X
+* Input:    x: координата, [0; 7]
+* Output:   none
+*/
+void GLCDSetX(const uint8_t x)
+{
+	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+	GLCD_DPORT = (1 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | x;
+	_delay_us(140);
+	GLCD_DPORT = 0;
+}
+
+/*
+* Function: GLCDSetY
+* Desc:     Записать в регистр координаты Y
+* Input:    y: координата, [0; 63]
+* Output:   none
+*/
+void GLCDSetY(const uint8_t y)
+{
+	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+	GLCD_DPORT = (0 << 7) | (1 << 6) | y;
+	_delay_us(140);
+	GLCD_DPORT = 0;
+}

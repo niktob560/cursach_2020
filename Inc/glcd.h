@@ -102,4 +102,22 @@ void GLCDOn();
 */
 void GLCDDrawGBuf();
 
+/*
+* Function: GLCDSetX
+* Desc:     Записать в регистр координаты X
+* Input:    x: координата, [0; 7]
+* Output:   none
+*/
+void GLCDSetX(const uint8_t x);
+
+/*
+* Function: GLCDSetY
+* Desc:     Записать в регистр координаты Y
+* Input:    y: координата, [0; 63]
+* Output:   none
+*/
+void GLCDSetY(const uint8_t y);
+
+
+
 #endif
