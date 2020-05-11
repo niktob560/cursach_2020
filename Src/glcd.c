@@ -18,7 +18,9 @@ uint8_t*** 	_glcd_gbuf = (uint8_t***)&_glcd_gbuf_0;	/*указатель на т
 */
 void GLCDSetPixel(const vect coords, const bool state)
 {
-	*_glcd_gbuf[coords.a / GLCD_WIDTH_DWORD][coords.b] = (uint8_t)(state >> (coords.a % GLCD_WIDTH_DWORD));
+	const uint8_t 	byteOffset = coords.a % 8;
+	uint8_t 		*saved = _glcd_gbuf[coords.a / 8][coords.b];
+	*saved = setBit(*saved, byteOffset, state);
 }
 
 
@@ -47,12 +49,15 @@ void GLCDSwitchBuffers(void)
 */
 void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap)
 {
-	for(uint8_t i = 0; i < size.b; i++)
+	for(uint8_t x_px = 0; x_px < size.a * 8; x_px++)
 	{
-		for (uint8_t j = 0; j < size.a; ++j)
+		const uint8_t 	x_byte = x_px / 8,
+						x_byte_offset = (uint8_t)(x_px - x_byte);
+		for(uint8_t y_px = 0; y_px < size.b; y_px++)
 		{
-			const uint8_t saved = *_glcd_gbuf[coords.a / 8][coords.b + i];
-			*_glcd_gbuf[coords.a / 8][coords.b + i] = setBit(saved, j % 8, getBit(pixmap[j / 8][i], j % 8));
+			GLCDSetPixel((const vect){	(uint8_t)(coords.a + x_px), 
+										(uint8_t)(coords.b + y_px)}, 
+							getBit(pixmap[x_byte][y_px], x_byte_offset));
 		}
 	}
 }
@@ -92,4 +97,19 @@ void GLCDDrawText(const vect coords, const char* text)
 		}
 		text++;
 	}
+}
+
+
+/*
+* Function: GLCDOn
+* Desc:     Отправить команду на включение экрана
+* Input:    none
+* Output:   none
+*/
+void GLCDOn()
+{
+	turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+	GLCD_DPORT = (0 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
+	_delay_ms(1);
+	GLCD_DPORT = 0;
 }

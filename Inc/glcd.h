@@ -4,6 +4,7 @@
 #include "main.h"
 #include "font.h"
 #include <util/atomic.h>
+#include <util/delay.h>
 
 #define GLCD_WIDTH 128
 #define GLCD_WIDTH_DWORD (GLCD_WIDTH / 8)
@@ -85,5 +86,20 @@ void GLCDDrawText(const vect coords, const char* text);
 */
 void GLCDDrawTextScaled(const vect coords, uint8_t scaleFactor, const char* text);
 
+/*
+* Function: GLCDOn
+* Desc:     Отправить команду на включение экрана
+* Input:    none
+* Output:   none
+*/
+void GLCDOn();
+
+/*
+* Function: GLCDDrawGBuf
+* Desc:     Отрисовать графический буффер
+* Input:    none
+* Output:   none
+*/
+void GLCDDrawGBuf();
 
 #endif
