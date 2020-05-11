@@ -118,7 +118,7 @@ void	TWIStop(void);
 */
 inline bool	TWIHadRead(void)
 {
-	return (_twi_in_len > 0);
+	return (_twi_in_len > 0)? true : false;
 }
 
 #endif
