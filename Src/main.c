@@ -4,15 +4,21 @@
 #include <twi.h>
 
 
+void init(void)
+{
+	/*порт управления экрана*/
+	DDRE = 0xFF;
+	/*порт данных экрана*/
+	DDRA = 0xFF;
+
+	GLCDOn();
+	
+	TWISetFreq(0x40);
+}
 
 
 int main()
 {
-	DDRE = 0xFF;
-	DDRA = 0xFF;
-	sei();
-	GLCDOn();
-	TWISetFreq(0x40);
 
 	while(1)
 	{

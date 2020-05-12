@@ -27,9 +27,15 @@ extern uint16_t _twi_out_len;
 * Input:    _freq: какую частоту установить
 * Output:   none
 */
-inline void	TWISetFreq(const uint8_t _freq)
+inline void	TWISetFreq(const uint32_t _freq)
 {
-	TWBR = _freq;
+	TWBR = (uint8_t)((F_CPU / (2 * _freq)) - 8);
+	// TWBR = _freq;
+	/*
+	 *	freq = (F_CPU)/(16+2(TWBR)*4^TWPS)
+	 *	TWBR * 2^TWPS = (F_CPU/2*freq) - 8
+	 *	т.к. чем выше TWPS тем ниже частота мы возьмем его за 0(предделитель=1)
+	*/
 }
 
 /*
