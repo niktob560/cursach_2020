@@ -5,11 +5,11 @@ volatile uint16_t _analogPins[NUM_OF_ANALOG_PINS];
 volatile uint8_t _currPin = 0;
 
 /*
-* Function ADCSetAnalogChanged
-* Desc     Установить флаг обновлено ли значение после последнего чтения
-* Input    __pin: канал АЦП
+* Function: ADCSetAnalogChanged
+* Desc:     Установить флаг обновлено ли значение после последнего чтения
+* Input:    __pin: канал АЦП
 * 			__state: флаг
-* Output   none
+* Output:   none
 */
 void ADCSetAnalogChanged(uint8_t __pin, uint8_t __state)
 {
@@ -17,10 +17,10 @@ void ADCSetAnalogChanged(uint8_t __pin, uint8_t __state)
 }
 
 /*
-* Function ADCGetAnalogChanged
-* Desc     Обновлено ли значение после последнего чтения
-* Input    __pin: канал АЦП
-* Output   флаг
+* Function: ADCGetAnalogChanged
+* Desc:     Обновлено ли значение после последнего чтения
+* Input:    __pin: канал АЦП
+* Output:   флаг
 */
 bool ADCGetAnalogChanged(uint8_t __pin)
 {
@@ -30,10 +30,10 @@ bool ADCGetAnalogChanged(uint8_t __pin)
 
 
 /*
-* Function ADCSendControl
-* Desc     Отправить управляющйю последовательность АЦП
-* Input    _contr: последовательность
-* Output   none
+* Function: ADCSendControl
+* Desc:     Отправить управляющйю последовательность АЦП
+* Input:    _contr: последовательность
+* Output:   none
 */
 void ADCSendControl(uint8_t __contr)
 {
@@ -41,10 +41,10 @@ void ADCSendControl(uint8_t __contr)
 }
 
 /*
-* Function ADCSetRef
-* Desc     Установить источник опорного напряжения
-* Input    __ref: источник
-* Output   none
+* Function: ADCSetRef
+* Desc:     Установить источник опорного напряжения
+* Input:    __ref: источник
+* Output:   none
 */
 void ADCSetRef(uint8_t __ref)
 {
@@ -53,10 +53,10 @@ void ADCSetRef(uint8_t __ref)
 }
 
 /*
-* Function ADCSetPrescaler
-* Desc     Установить предделитель
-* Input    __prescaler: предделитель
-* Output   none
+* Function: ADCSetPrescaler
+* Desc:     Установить предделитель
+* Input:    __prescaler: предделитель
+* Output:   none
 */
 void ADCSetPrescaler(uint8_t __prescaler)
 {
@@ -64,10 +64,10 @@ void ADCSetPrescaler(uint8_t __prescaler)
 }
 
 /*
-* Function ADCEnable
-* Desc     Включить АЦП
-* Input    none
-* Output   none
+* Function: ADCEnable
+* Desc:     Включить АЦП
+* Input:    none
+* Output:   none
 */
 void ADCEnable(void)
 {
@@ -75,10 +75,10 @@ void ADCEnable(void)
 }
 
 /*
-* Function ADCDisable
-* Desc     Выключить АЦП
-* Input    none
-* Output   none
+* Function: ADCDisable
+* Desc:     Выключить АЦП
+* Input:    none
+* Output:   none
 */
 void ADCDisable(void)
 {
@@ -86,10 +86,10 @@ void ADCDisable(void)
 }
 
 /*
-* Function ADCStartConvert
-* Desc     Запустить преобразования
-* Input    none
-* Output   none
+* Function: ADCStartConvert
+* Desc:     Запустить преобразования
+* Input:    none
+* Output:   none
 */
 void ADCStartConvert(void)
 {
@@ -97,10 +97,10 @@ void ADCStartConvert(void)
 }
 
 /*
-* Function ADCStopConvert
-* Desc     Остановить преобразования
-* Input    none
-* Output   none
+* Function: ADCStopConvert
+* Desc:     Остановить преобразования
+* Input:    none
+* Output:   none
 */
 void ADCStopConvert(void)
 {
@@ -108,10 +108,10 @@ void ADCStopConvert(void)
 }
 
 /*
-* Function ADCFlush
-* Desc     Очистить регистры АЦП
-* Input    none
-* Output   none
+* Function: ADCFlush
+* Desc:     Очистить регистры АЦП
+* Input:    none
+* Output:   none
 */
 void ADCFlush(void)
 {
@@ -125,10 +125,10 @@ void ADCFlush(void)
 
 
 /*
-* Function ADCInit
-* Desc     Инициализировать АЦП
-* Input    none
-* Output   none
+* Function: ADCInit
+* Desc:     Инициализировать АЦП
+* Input:    none
+* Output:   none
 */
 void ADCInit(void)
 {
@@ -145,10 +145,10 @@ void ADCInit(void)
 
 
 /*
-* Function analogRead
-* Desc     Получить значение измерения
-* Input    __pin: канал АЦП
-* Output   измерение
+* Function: analogRead
+* Desc:     Получить значение измерения
+* Input:    __pin: канал АЦП
+* Output:   измерение
 */
 uint16_t ADCGetPin(uint8_t __pin)
 {
@@ -157,8 +157,8 @@ uint16_t ADCGetPin(uint8_t __pin)
 }
 
 /*
-* Function ISR(ADC_vect)
-* Desc     Обработчик прерывания АЦП
+* Function: ISR(ADC_vect)
+* Desc:     Обработчик прерывания АЦП
 */
 ISR(ADC_vect)
 {
