@@ -12,17 +12,22 @@ void init(void)
 	DDRA = 0xFF;
 
 	GLCDOn();
-	
-	TWISetFreq(0x40);
+
+			/*100КГц*/
+	TWISetFreq(100000);
 }
 
 
 int main()
 {
+	cli();
+	init();
+	sei();
 
 	while(1)
 	{
 		GLCDDrawSymbol((vect){0, 0}, 'A');
+		_delay_ms(100);
 	}
     return 0;
 }
