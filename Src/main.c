@@ -2,6 +2,7 @@
 #include <glcd.h>
 #include <usart.h>
 #include <twi.h>
+#include <gobjects.h>
 
 #define FUNCS_NUM 10
 
@@ -88,7 +89,8 @@ int main()
 	cli();
 	init();
 	sei();
-
+	const graph_primitive prim = {{0, 0}, {0, 0}, 0, 0};
+	GOBJECTDrawPrimitive(&prim);
 	//do nothing
 	while(1)
 	{
