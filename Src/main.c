@@ -4,6 +4,28 @@
 #include <twi.h>
 
 
+
+ISR(TIMER0_COMP_vect)
+{
+
+}
+
+
+void initTimers(void)
+{
+					/*CTC; предделитель 1024*/
+	TCCR0 = (1 << WGM01) | (1 << CS02) | (1 << CS01) | (1 << CS00);
+	
+	/*разрешить прерывание по совпадению*/
+	TIMSK = 1 << OCIE0;
+	
+	/*разрешить сравнение*/
+	TIFR = 1 << OCF0;
+
+	/*с чем сравнивать*/
+	OCR0 = 100;
+}
+
 void init(void)
 {
 	/*порт управления экрана*/
@@ -15,6 +37,8 @@ void init(void)
 
 			/*100КГц*/
 	TWISetFreq(100000);
+
+	initTimers();
 }
 
 
