@@ -66,6 +66,7 @@ clean:
 	@rm -rf $(BUILD_DIR)/*
 	@echo -e '\033[0;31mCleaned\033[0m'
 
+.NOTPARALLEL: date
 date:
 	@echo -e '\033[1;32m'"Starting build at " | tr -d '\n'
 	@date
