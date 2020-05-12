@@ -36,14 +36,14 @@ uint16_t ADCGetPin(uint8_t _pin);
 #define ADC_CONTROL_INTERRUPT_EN       (1 << ADIE)					/*Разрешить прерывание по окончанию преобразования*/
 
 /*------------------------------Предделители------------------------------*/
-#define ADC_PRESCALLER_MASK            ((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0))	/*Маска для очистки*/
-#define ADC_PRESCALLER_2               (1 << ADPS0)									/*2*/
-#define ADC_PRESCALLER_4               (1 << ADPS1)									/*4*/
-#define ADC_PRESCALLER_8               ((1 << ADPS0) | (1 << ADPS1))				/*8*/
-#define ADC_PRESCALLER_16              (1 << ADPS2)									/*16*/
-#define ADC_PRESCALLER_32              ((1 << ADPS2) | (1 << ADPS0))				/*32*/
-#define ADC_PRESCALLER_64              ((1 << ADPS2) | (1 << ADPS1))				/*64*/
-#define ADC_PRESCALLER_128             ((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0))	/*128*/
+#define ADC_PRESCALER_MASK            ((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0))	/*Маска для очистки*/
+#define ADC_PRESCALER_2               (1 << ADPS0)									/*2*/
+#define ADC_PRESCALER_4               (1 << ADPS1)									/*4*/
+#define ADC_PRESCALER_8               ((1 << ADPS0) | (1 << ADPS1))					/*8*/
+#define ADC_PRESCALER_16              (1 << ADPS2)									/*16*/
+#define ADC_PRESCALER_32              ((1 << ADPS2) | (1 << ADPS0))					/*32*/
+#define ADC_PRESCALER_64              ((1 << ADPS2) | (1 << ADPS1))					/*64*/
+#define ADC_PRESCALER_128             ((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0))	/*128*/
 
 
 

@@ -6,9 +6,9 @@ volatile uint8_t _currPin = 0;
 
 /*
 * Function ADCSetAnalogChanged
-* Desc     Set state of "isNewMeasure"
-* Input    __pin: state of what pin?
-* 			__state: state to set
+* Desc     Установить флаг обновлено ли значение после последнего чтения
+* Input    __pin: канал АЦП
+* 			__state: флаг
 * Output   none
 */
 void ADCSetAnalogChanged(uint8_t __pin, uint8_t __state)
@@ -18,9 +18,9 @@ void ADCSetAnalogChanged(uint8_t __pin, uint8_t __state)
 
 /*
 * Function ADCGetAnalogChanged
-* Desc     Return state of "isNewMeasure"
-* Input    __pin: what pin get state
-* Output   state
+* Desc     Обновлено ли значение после последнего чтения
+* Input    __pin: канал АЦП
+* Output   флаг
 */
 bool ADCGetAnalogChanged(uint8_t __pin)
 {
@@ -31,8 +31,8 @@ bool ADCGetAnalogChanged(uint8_t __pin)
 
 /*
 * Function ADCSendControl
-* Desc     Set control signal to ADC
-* Input    _contr: control signal
+* Desc     Отправить управляющйю последовательность АЦП
+* Input    _contr: последовательность
 * Output   none
 */
 void ADCSendControl(uint8_t __contr)
@@ -42,8 +42,8 @@ void ADCSendControl(uint8_t __contr)
 
 /*
 * Function ADCSetRef
-* Desc     Set analog reference source
-* Input    __ref: analog reference source
+* Desc     Установить источник опорного напряжения
+* Input    __ref: источник
 * Output   none
 */
 void ADCSetRef(uint8_t __ref)
@@ -53,19 +53,19 @@ void ADCSetRef(uint8_t __ref)
 }
 
 /*
-* Function ADCSetPrescaller
-* Desc     Set ADC prescaller
-* Input    __prescaller: prescaller to set
+* Function ADCSetPrescaler
+* Desc     Установить предделитель
+* Input    __prescaler: предделитель
 * Output   none
 */
-void ADCSetPrescaller(uint8_t __prescaller)
+void ADCSetPrescaler(uint8_t __prescaler)
 {
-	ADCSRA = (uint8_t)((ADCSRA & ~ADC_PRESCALLER_MASK) | __prescaller);
+	ADCSRA = (uint8_t)((ADCSRA & ~ADC_PRESCALER_MASK) | __prescaler);
 }
 
 /*
 * Function ADCEnable
-* Desc     Start ADC
+* Desc     Включить АЦП
 * Input    none
 * Output   none
 */
@@ -76,7 +76,7 @@ void ADCEnable(void)
 
 /*
 * Function ADCDisable
-* Desc     Stop ADC
+* Desc     Выключить АЦП
 * Input    none
 * Output   none
 */
@@ -87,7 +87,7 @@ void ADCDisable(void)
 
 /*
 * Function ADCStartConvert
-* Desc     Start converting
+* Desc     Запустить преобразования
 * Input    none
 * Output   none
 */
@@ -98,7 +98,7 @@ void ADCStartConvert(void)
 
 /*
 * Function ADCStopConvert
-* Desc     Stop converting
+* Desc     Остановить преобразования
 * Input    none
 * Output   none
 */
@@ -109,7 +109,7 @@ void ADCStopConvert(void)
 
 /*
 * Function ADCFlush
-* Desc     Clear registers
+* Desc     Очистить регистры АЦП
 * Input    none
 * Output   none
 */
@@ -126,7 +126,7 @@ void ADCFlush(void)
 
 /*
 * Function ADCInit
-* Desc     Initialize ADC
+* Desc     Инициализировать АЦП
 * Input    none
 * Output   none
 */
@@ -137,7 +137,7 @@ void ADCInit(void)
 	ADCFlush();
 	ADCSetRef(ADC_REF_AVCC);
 	ADMUX |= _currPin;
-	ADCSetPrescaller(ADC_PRESCALLER_32);
+	ADCSetPrescaler(ADC_PRESCALER_32);
 	ADCSendControl(ADC_CONTROL_INTERRUPT_EN);
 	ADCEnable();
 	ADCStartConvert();
@@ -146,11 +146,11 @@ void ADCInit(void)
 
 /*
 * Function analogRead
-* Desc     Return measurment of pin
-* Input    __pin: pin for returning measurment
-* Output   measurment
+* Desc     Получить значение измерения
+* Input    __pin: канал АЦП
+* Output   измерение
 */
-int analogRead(uint8_t __pin)
+uint16_t ADCGetPin(uint8_t __pin)
 {
 	ADCSetAnalogChanged(__pin, 0);
 	return _analogPins[__pin] & ADC_DATA_MASK;
@@ -158,9 +158,7 @@ int analogRead(uint8_t __pin)
 
 /*
 * Function ISR(ADC_vect)
-* Desc     Interrupt handler for vector ADC_vect
-* Input    Interrupt vector
-* Output   none
+* Desc     Обработчик прерывания АЦП
 */
 ISR(ADC_vect)
 {
