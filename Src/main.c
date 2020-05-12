@@ -8,27 +8,25 @@
 void (*funcsArray[FUNCS_NUM])();
 volatile uint8_t currFuncIndex = 0;
 bool systemIdle = true;
-bool taskSwitching = false;
 
-void funcCaller(const uint8_t index)
-{
-	systemIdle = false;
-	taskSwitching = false;
-	if(funcsArray[index] != NULL)
-		funcsArray[index]();
-	systemIdle = true;
-}
 
 ISR(TIMER0_COMP_vect)
 {
-	if(systemIdle && !taskSwitching)
+	if(systemIdle)
 	{
 		if(currFuncIndex >= FUNCS_NUM - 1)
 			currFuncIndex = 0;
 		else
 			currFuncIndex++;
 
-		taskSwitching = true;
+		if(funcsArray[currFuncIndex] != NULL)
+		{
+			systemIdle = false;
+			sei();
+			funcsArray[currFuncIndex]();
+			cli();
+			systemIdle = true;
+		}
 	}
 }
 
@@ -72,9 +70,8 @@ int main()
 
 	while(1)
 	{
-		if(!taskSwitching)
-			funcCaller(currFuncIndex);
-		//else do nothing
+		_delay_us(1);
+		//do nothing
 	}
     return 0;
 }
