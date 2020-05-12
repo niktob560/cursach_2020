@@ -3,14 +3,87 @@
 
 #include <main.h>
 
-
+/*
+* Function: ADCEnable
+* Desc:     Включить АЦП
+* Input:    none
+* Output:   none
+*/
 void ADCEnable(void);
+
+/*
+* Function: ADCDisable
+* Desc:     Выключить АЦП
+* Input:    none
+* Output:   none
+*/
 void ADCDisable(void);
+
+/*
+* Function: ADCStartConvert
+* Desc:     Запустить преобразования
+* Input:    none
+* Output:   none
+*/
 void ADCStartConvert(void);
+
+/*
+* Function: ADCStopConvert
+* Desc:     Остановить преобразования
+* Input:    none
+* Output:   none
+*/
 void ADCStopConvert(void);
+
+/*
+* Function: ADCFlush
+* Desc:     Очистить регистры АЦП
+* Input:    none
+* Output:   none
+*/
 void ADCFlush(void);
+
+/*
+* Function: ADCInit
+* Desc:     Инициализировать АЦП
+* Input:    none
+* Output:   none
+*/
 void ADCInit(void);
+
+/*
+* Function: analogRead
+* Desc:     Получить значение измерения
+* Input:    __pin: канал АЦП
+* Output:   измерение
+*/
 uint16_t ADCGetPin(uint8_t _pin);
+
+/*
+* Function: ADCSetPrescaler
+* Desc:     Установить предделитель
+* Input:    __prescaler: предделитель
+* Output:   none
+*/
+void ADCSetPrescaler(uint8_t __prescaler);
+
+
+/*
+* Function: ADCSetRef
+* Desc:     Установить источник опорного напряжения
+* Input:    __ref: источник
+* Output:   none
+*/
+void ADCSetRef(uint8_t __ref);
+
+
+/*
+* Function: ADCGetAnalogChanged
+* Desc:     Обновлено ли значение после последнего чтения
+* Input:    __pin: канал АЦП
+* Output:   флаг
+*/
+bool ADCGetAnalogChanged(uint8_t __pin);
 
 
 /*================================Настройки================================*/
