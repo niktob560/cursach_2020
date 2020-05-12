@@ -1,9 +1,12 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__ 1
 
+#define F_CPU 8000000L
+
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 enum Bool
 {
@@ -21,10 +24,10 @@ typedef struct
 #define false False
 #define NULL 0x00
 
-#define F_CPU 8000000L
 
 int main(void);
 
+#define _delay_ns(_delay) _delay_us(_delay * 10)
 
 inline bool getBit(uint8_t byte, uint8_t i)
 {
