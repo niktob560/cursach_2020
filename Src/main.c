@@ -4,21 +4,21 @@
 #include <twi.h>
 
 #define FUNCS_NUM 10
+
+void a();
+
+void b();
+
 /*Массив ф-ций для вызова*/
-void (*funcsArray[FUNCS_NUM])();
+void (*funcsArray[FUNCS_NUM])() = {a, b};
 volatile uint8_t currFuncIndex = 0;
-bool systemIdle = true;
+volatile bool systemIdle = true;
 
 
 ISR(TIMER0_COMP_vect)
 {
 	if(systemIdle)
 	{
-		if(currFuncIndex >= FUNCS_NUM - 1)
-			currFuncIndex = 0;
-		else
-			currFuncIndex++;
-
 		if(funcsArray[currFuncIndex] != NULL)
 		{
 			systemIdle = false;
@@ -27,6 +27,11 @@ ISR(TIMER0_COMP_vect)
 			cli();
 			systemIdle = true;
 		}
+
+		if(currFuncIndex >= FUNCS_NUM - 1)
+			currFuncIndex = 0;
+		else
+			currFuncIndex++;
 	}
 }
 
@@ -48,17 +53,28 @@ void initTimers(void)
 
 void init(void)
 {
+	#ifdef DEBUG
+	USART0Begin(115200);
+	#endif
 	/*порт управления экрана*/
 	DDRE = 0xFF;
 	/*порт данных экрана*/
 	DDRA = 0xFF;
-
 	GLCDOn();
+	#ifdef DEBUG
+	USART0Println("GLCD ON");
+	#endif
 
 			/*100КГц*/
 	TWISetFreq(100000);
+	#ifdef DEBUG
+	USART0Println("TWI ON");
+	#endif
 
 	initTimers();
+	#ifdef DEBUG
+	USART0Println("TIMERS ON");
+	#endif
 }
 
 
@@ -68,11 +84,8 @@ int main()
 	init();
 	sei();
 
-	while(1)
-	{
-		_delay_us(1);
-		//do nothing
-	}
+	//do nothing
+	while(1);
     return 0;
 }
 
@@ -117,3 +130,8 @@ void shiftRight(uint8_t* arr, uint32_t len, uint32_t el)
 		len--;
 	}
 }
+
+
+
+void a(){}
+void b(){}
