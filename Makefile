@@ -10,6 +10,7 @@ TARGET=main
 MCU=atmega128
 
 C_SOURCES=$(wildcard $(SRC_DIR)/*.c)
+C_HEADERS=$(wildcard $(INC_DIR)/*.h)
 
 C_INCLUDES=-I$(INC_DIR)/
 
@@ -20,14 +21,16 @@ LFLAGS=$(OPTIMIZE) -Wno-write-strings -Wcast-align -Wcast-qual -Wconversion -Wct
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
+vpath %.h $(sort $(dir $(C_HEADERS)))
 
 
 
 all: size Dir
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.c %.h Makefile | $(BUILD_DIR)
 	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
 	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+	@avr-objdump -d -S $@ > $(BUILD_DIR)/$(notdir $(<:.c=.casm))
 
 
 
@@ -40,13 +43,13 @@ $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
 	@echo -e '\033[1;32mHEX\t'$<'\t->\t'$@'\033[0m'
 	@avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).eep"
 	@avr-objcopy -O ihex -R .eeprom  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).hex"
+	@avr-objdump -d -S $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET)_elf.casm
 
 
 size: $(BUILD_DIR)/$(TARGET).hex
 	@echo -e '\033[0;36m'
 	@avr-size $(BUILD_DIR)/$(TARGET).elf -C --mcu=$(MCU)
 	@echo -e '\033[0m'
-
 
 
 BuildDir:
