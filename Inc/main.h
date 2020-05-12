@@ -19,6 +19,7 @@ typedef struct
 #define bool enum Bool
 #define true True
 #define false False
+#define NULL 0x00
 
 #define F_CPU 8000000L
 

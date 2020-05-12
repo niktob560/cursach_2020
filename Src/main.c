@@ -3,11 +3,33 @@
 #include <usart.h>
 #include <twi.h>
 
+#define FUNCS_NUM 10
+/*Массив ф-ций для вызова*/
+void (*funcsArray[FUNCS_NUM])();
+volatile uint8_t currFuncIndex = 0;
+bool systemIdle = true;
+bool taskSwitching = false;
 
+void funcCaller(const uint8_t index)
+{
+	systemIdle = false;
+	taskSwitching = false;
+	if(funcsArray[index] != NULL)
+		funcsArray[index]();
+	systemIdle = true;
+}
 
 ISR(TIMER0_COMP_vect)
 {
+	if(systemIdle && !taskSwitching)
+	{
+		if(currFuncIndex >= FUNCS_NUM - 1)
+			currFuncIndex = 0;
+		else
+			currFuncIndex++;
 
+		taskSwitching = true;
+	}
 }
 
 
@@ -50,8 +72,9 @@ int main()
 
 	while(1)
 	{
-		GLCDDrawSymbol((vect){0, 0}, 'A');
-		_delay_ms(100);
+		if(!taskSwitching)
+			funcCaller(currFuncIndex);
+		//else do nothing
 	}
     return 0;
 }
