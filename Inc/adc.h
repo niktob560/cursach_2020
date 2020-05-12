@@ -3,6 +3,7 @@
 
 #include <main.h>
 
+
 void ADCEnable(void);
 void ADCDisable(void);
 void ADCStartConvert(void);
@@ -12,6 +13,12 @@ void ADCInit(void);
 uint16_t ADCGetPin(uint8_t _pin);
 
 
+/*================================Настройки================================*/
+
+#define NUM_OF_ANALOG_PINS 	2
+#define ADC_MUX_MASK		0x1F
+#define ADC_DATA_MASK       1023
+#define ADC_CHANGED_MASK    1024
 
 
 
