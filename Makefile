@@ -24,9 +24,9 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 vpath %.h $(sort $(dir $(C_HEADERS)))
 
 
-all: date size Dir
+all: date size Dir $(C_HEADERS)
 
-$(BUILD_DIR)/%.o: %.c %.h Makefile | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
 	@$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 	@avr-objdump -d -S $@ > $(BUILD_DIR)/$(notdir $(<:.c=.casm))
