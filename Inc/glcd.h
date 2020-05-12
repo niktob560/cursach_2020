@@ -35,7 +35,7 @@
 *			data:	данные для записи
 * Output:   none
 */
-void GLCDWriteCommand(const bool cs1, const bool cs2, bool rs, bool rw, const uint8_t data);
+void GLCDWriteCommand(const bool cs1, const bool cs2, const bool rs, const bool rw, const uint8_t data);
 
 
 /*
@@ -126,13 +126,15 @@ void GLCDSetX(const uint8_t x);
 */
 void GLCDSetY(const uint8_t y);
 
+
 /*
 * Function: GLCDWriteData
 * Desc:     Записать в память данные
-* Input:    data: данные
+* Input:    isCS1: выбранный контроллер CS1?
+*			data: данные
 * Output:   none
 */
-void GLCDWriteData(const uint8_t data);
+void GLCDWriteDisplayData(const bool isCS1, const uint8_t data);
 
 /*
 * Function: GLCDReadData

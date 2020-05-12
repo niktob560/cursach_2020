@@ -119,7 +119,7 @@ void GLCDDrawText(const vect coords, const char* text)
 *			data:	данные для записи
 * Output:   none
 */
-void GLCDWriteCommand(const bool cs1, const bool cs2, bool rs, bool rw, const uint8_t data)
+void GLCDWriteCommand(const bool cs1, const bool cs2, const bool rs, const bool rw, const uint8_t data)
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
@@ -149,20 +149,7 @@ void GLCDWriteCommand(const bool cs1, const bool cs2, bool rs, bool rw, const ui
 */
 void GLCDOn()
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
-		_delay_ns(450 - 140);
-		turnPortOn(&GLCD_SPORT, (1 << GLCD_CS1) | (1 << GLCD_CS2));
-		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-		GLCD_DPORT = (0 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
-		_delay_ns(140);
-		turnPortOn(&GLCD_SPORT, 1 << GLCD_E);
-		_delay_ns(1000 - 140 - 10);
-		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
-		_delay_ns(10);
-		GLCD_DPORT = 0;
-	}
+	GLCDWriteCommand(1, 1, 0, 0, 0x1F);
 }
 
 
@@ -174,13 +161,9 @@ void GLCDOn()
 */
 void GLCDSetX(const uint8_t x)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-		GLCD_DPORT = (1 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | x;
-		_delay_us(140);
-		GLCD_DPORT = 0;
-	}
+	const bool 	cs1 = (x < 64), 
+				cs2 = (x >= 64);
+	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | x);
 }
 
 /*
@@ -191,31 +174,19 @@ void GLCDSetX(const uint8_t x)
 */
 void GLCDSetY(const uint8_t y)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
-		GLCD_DPORT = (0 << 7) | (1 << 6) | y;
-		_delay_us(140);
-		GLCD_DPORT = 0;
-	}
+	GLCDWriteCommand(1, 1, 0, 0, 0x40 | y);
 }
 
 /*
-* Function: GLCDWriteData
+* Function: GLCDWriteDisplayData
 * Desc:     Записать в память данные
-* Input:    data: данные
+* Input:    isCS1: выбранный контроллер CS1?
+*			data: данные
 * Output:   none
 */
-void GLCDWriteData(const uint8_t data)
+void GLCDWriteDisplayData(const bool isCS1, const uint8_t data)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		turnPortOn(&GLCD_SPORT, 1 << GLCD_RS);
-		turnPortOff(&GLCD_SPORT, 1 << GLCD_RW);
-		GLCD_DPORT = data;
-		_delay_us(150);
-		GLCD_DPORT = 0;
-	}
+	GLCDWriteCommand(isCS1, !isCS1, 0, 1, data);
 }
 
 
