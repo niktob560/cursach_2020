@@ -24,8 +24,7 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 vpath %.h $(sort $(dir $(C_HEADERS)))
 
 
-
-all: size Dir
+all: date size Dir
 
 $(BUILD_DIR)/%.o: %.c %.h Makefile | $(BUILD_DIR)
 	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
@@ -68,3 +67,8 @@ Dir: BuildDir SrcDir IncDir
 clean:
 	@rm -rf $(BUILD_DIR)/*
 	@echo -e '\033[0;31mCleaned\033[0m'
+
+date:
+	@echo -e '\033[1;32m'"Starting build at " | tr -d '\n'
+	@date
+	@echo -e '\033[0m'
