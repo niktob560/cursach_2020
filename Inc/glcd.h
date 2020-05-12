@@ -116,24 +116,16 @@ static inline void GLCDOn()
 }
 
 /*
-* Function: GLCDDrawGBuf
-* Desc:     Отрисовать графический буффер
-* Input:    none
-* Output:   none
-*/
-void GLCDDrawGBuf();
-
-/*
 * Function: GLCDSetX
 * Desc:     Записать в регистр координаты X
-* Input:    x: координата, [0; 7]
+* Input:    x: координата, [0; 15], в байтах
 * Output:   none
 */
 static inline void GLCDSetX(const uint8_t x)
 {
-	const bool 	cs1 = (x < 64), 
-				cs2 = (x >= 64);
-	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | ((x % 64) / 8));
+	const bool 	cs1 = (x < 8), 
+				cs2 = (x >= 8);
+	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | (x % 8));
 }
 
 /*

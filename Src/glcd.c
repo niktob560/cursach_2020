@@ -36,15 +36,36 @@ void GLCDSetPixel(const vect coords, const bool state)
 /*
 * Function: GLCDSet8Pixels
 * Desc:     Установить 8 пикселей с координатами {x,y}
-* Input:    coords: координаты вектора
+* Input:    coords: координаты левого верхнего угла
 *			pixels: пиксели
 * Output:   none
 */
 void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 {
-	GLCDSetX(coords.a);
+	const uint8_t byteOffset = coords.a % 8;
+	const bool cs1 = coords.a < 64;
+	GLCDSetX(coords.a / 8);
 	GLCDSetY(coords.b);
-	GLCDWriteDisplayData(coords.a < 64, pixels);
+	if(byteOffset == 0)
+	{
+		GLCDWriteDisplayData(coords.a < 64, pixels);
+	}
+	else
+	{
+		uint8_t byte = GLCDReadDisplayData(cs1);
+		byte &= (uint8_t)~((1 << (8 - byteOffset)) - 1);
+		byte |= (uint8_t)(pixels >> byteOffset);
+		GLCDSetY(coords.b);
+		GLCDWriteDisplayData(cs1, byte);
+
+		GLCDSetX((uint8_t)((coords.a / 8) + 1));
+		GLCDSetY(coords.b);
+		byte = GLCDReadDisplayData(cs1);
+		byte &= (uint8_t)((1 << byteOffset) - 1);
+		byte |= (uint8_t)(pixels << (8 - byteOffset));
+		GLCDSetY(coords.b);
+		GLCDWriteDisplayData(cs1, byte);
+	}
 }
 
 
