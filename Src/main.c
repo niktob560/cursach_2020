@@ -7,10 +7,14 @@
 
 void a();
 
-void b();
+
+static inline int b()
+{
+	return 42;
+}
 
 /*Массив ф-ций для вызова*/
-void (*funcsArray[FUNCS_NUM])() = {a, b};
+void (*funcsArray[FUNCS_NUM])() = {a};
 volatile uint8_t currFuncIndex = 0;
 volatile bool systemIdle = true;
 
@@ -86,7 +90,10 @@ int main()
 	sei();
 
 	//do nothing
-	while(1);
+	while(1)
+	{
+		_delay_us(1);
+	}
     return 0;
 }
 
@@ -114,7 +121,6 @@ void shiftLeft(uint8_t* arr, uint32_t len, uint32_t el)
 }
 
 
-
 /*
 *	Function:	shiftRight
 *	Desc:		Сдвинуть массив вправо на N элементов
@@ -134,5 +140,7 @@ void shiftRight(uint8_t* arr, uint32_t len, uint32_t el)
 
 
 
-void a(){}
-void b(){}
+void a()
+{
+	_delay_ns(b());
+}

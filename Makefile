@@ -32,7 +32,6 @@ $(BUILD_DIR)/%.o: %.c %.h Makefile | $(BUILD_DIR)
 	@avr-objdump -d -S $@ > $(BUILD_DIR)/$(notdir $(<:.c=.casm))
 
 
-
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
 	@echo -e '\033[1;32mELF\t'$(OBJECTS)' -> '$@'\033[0m'
 	@$(CC) $(LFLAGS) $(OBJECTS) -o $(BUILD_DIR)/$(TARGET).elf
@@ -43,7 +42,6 @@ $(BUILD_DIR)/$(TARGET).hex: $(BUILD_DIR)/$(TARGET).elf
 	@avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).eep"
 	@avr-objcopy -O ihex -R .eeprom  "$(BUILD_DIR)/$(TARGET).elf" "$(BUILD_DIR)/$(TARGET).hex"
 	@avr-objdump -d -S $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET)_elf.casm
-
 
 size: $(BUILD_DIR)/$(TARGET).hex
 	@echo -e '\033[0;36m'

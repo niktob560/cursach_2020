@@ -133,7 +133,7 @@ static inline void GLCDSetX(const uint8_t x)
 {
 	const bool 	cs1 = (x < 64), 
 				cs2 = (x >= 64);
-	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | x);
+	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | ((x % 64) / 8));
 }
 
 /*
