@@ -109,6 +109,37 @@ void GLCDDrawText(const vect coords, const char* text)
 	}
 }
 
+/*
+* Function: GLCDWriteCommand
+* Desc:     Отправить команду записи
+* Input:    cs1:	состояние CS1
+*			cs2:	состояние CS2
+*			rs:		состояние RS
+*			rw:		состояние R/W
+*			data:	данные для записи
+* Output:   none
+*/
+void GLCDWriteCommand(const bool cs1, const bool cs2, bool rs, bool rw, const uint8_t data)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(450 - 140);
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_CS1) | (1 << GLCD_CS2));
+		turnPortOn(&GLCD_SPORT, (uint8_t)((cs1 << GLCD_CS1) | (cs2 << GLCD_CS2)));
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
+		turnPortOn(&GLCD_SPORT, (uint8_t)((rs << GLCD_RS) | (rw  << GLCD_RW)));
+		GLCD_DPORT = data;
+		_delay_ns(140);
+		turnPortOn(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(1000 - 140 - 10);
+		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(10);
+		GLCD_DPORT = 0;
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_CS1) | (1 << GLCD_CS2) | (1 << GLCD_RS) | (1  << GLCD_RW));
+	}
+}
+
 
 /*
 * Function: GLCDOn
@@ -120,9 +151,16 @@ void GLCDOn()
 {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
+		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(450 - 140);
+		turnPortOn(&GLCD_SPORT, (1 << GLCD_CS1) | (1 << GLCD_CS2));
 		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1  << GLCD_RW));
 		GLCD_DPORT = (0 << 7) | (0 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0);
-		_delay_ms(1);
+		_delay_ns(140);
+		turnPortOn(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(1000 - 140 - 10);
+		turnPortOff(&GLCD_SPORT, 1 << GLCD_E);
+		_delay_ns(10);
 		GLCD_DPORT = 0;
 	}
 }

@@ -24,6 +24,20 @@
 
 
 
+
+/*
+* Function: GLCDWriteCommand
+* Desc:     Отправить команду записи
+* Input:    cs1:	состояние CS1
+*			cs2:	состояние CS2
+*			rs:		состояние RS
+*			rw:		состояние R/W
+*			data:	данные для записи
+* Output:   none
+*/
+void GLCDWriteCommand(const bool cs1, const bool cs2, bool rs, bool rw, const uint8_t data);
+
+
 /*
 * Function: GLCDSetPixel
 * Desc:     Установить пиксель с координатами {x,y}
