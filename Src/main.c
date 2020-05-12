@@ -60,6 +60,7 @@ void init(void)
 	DDRE = 0xFF;
 	/*порт данных экрана*/
 	DDRA = 0xFF;
+	
 	GLCDOn();
 	#ifdef DEBUG
 	USART0Println("GLCD ON");

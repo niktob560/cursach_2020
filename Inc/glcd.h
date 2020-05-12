@@ -25,6 +25,15 @@
 
 
 /*
+* Function: GLCDSetPixel
+* Desc:     Установить пиксель с координатами {x,y}
+* Input:    coords: координаты вектора
+*			pixels: пиксели
+* Output:   none
+*/
+void GLCDSetPixel(const vect coords, const bool state);
+
+/*
 * Function: GLCDSet8Pixels
 * Desc:     Установить 8 пикселей с координатами {x,y}
 * Input:    coords: координаты вектора
@@ -110,5 +119,14 @@ void GLCDSetY(const uint8_t y);
 * Output:   none
 */
 void GLCDWriteData(const uint8_t data);
+
+/*
+* Function: GLCDReadData
+* Desc:     Прочитать данные из памяти
+* Input:    none
+* Output:   данные
+*/
+uint8_t GLCDReadData(void);
+
 
 #endif

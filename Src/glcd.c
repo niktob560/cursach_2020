@@ -2,6 +2,36 @@
 #include <font.h>
 
 
+/*
+* Function: GLCDSetPixel
+* Desc:     Установить пиксель с координатами {x,y}
+* Input:    coords: координаты вектора
+*			pixels: пиксели
+* Output:   none
+*/
+void GLCDSetPixel(const vect coords, const bool state)
+{
+	const uint8_t 	byteOffset = coords.a % 8,
+					byteNum    = coords.a / 8;
+			/*Сохранить текущий байт*/
+	uint8_t byte = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		GLCDSetX(byteNum);
+		GLCDSetY(coords.b);
+		byte = GLCDReadData();
+	}
+	byte &= (uint8_t)~(1 << byteOffset);
+	byte |= (uint8_t)(state << byteOffset);
+
+			/*Записать новый байт*/
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		GLCDSetX(byteNum);
+		GLCDSetY(coords.b);
+		GLCDWriteData(byte);
+	}
+}
 
 /*
 * Function: GLCDSet8Pixels
@@ -148,4 +178,33 @@ void GLCDWriteData(const uint8_t data)
 		_delay_us(150);
 		GLCD_DPORT = 0;
 	}
+}
+
+
+/*
+* Function: GLCDReadData
+* Desc:     Прочитать данные из памяти
+* Input:    none
+* Output:   данные
+*/
+uint8_t GLCDReadData(void)
+{
+	uint8_t ret = 0;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		/*установить лог. 0 на порту данных*/
+		GLCD_DPORT = 0;
+		/*Установить порт данных в чтение*/
+		DDRD = 0x00;
+		/*поднять RS и RW*/
+		turnPortOn(&GLCD_SPORT, (1 << GLCD_RS) | (1 << GLCD_RW));
+		_delay_us(140);
+		/*сохранить данные с шины*/
+		ret = PIND;
+		/*опустить RS и RW*/
+		turnPortOff(&GLCD_SPORT, (1 << GLCD_RS) | (1 << GLCD_RW));
+		/*установить порт данных в запись*/
+		DDRD = 0xFF;
+	}
+	return ret;
 }
