@@ -39,6 +39,16 @@ void GLCDWriteCommand(const bool cs1, const bool cs2, const bool rs, const bool 
 
 
 /*
+* Function: GLCDReadCommand
+* Desc:     Отправить команду чтения
+* Input:    isCS1:	состояние CS1
+*			rs:		состояние RS
+* Output:   прочитанный байт
+*/
+uint8_t GLCDReadCommand(const bool isCS1, const bool rs);
+
+
+/*
 * Function: GLCDSetPixel
 * Desc:     Установить пиксель с координатами {x,y}
 * Input:    coords: координаты вектора
@@ -100,7 +110,10 @@ void GLCDDrawTextScaled(const vect coords, uint8_t scaleFactor, const char* text
 * Input:    none
 * Output:   none
 */
-void GLCDOn();
+static inline void GLCDOn()
+{
+	GLCDWriteCommand(1, 1, 0, 0, 0x1F);
+}
 
 /*
 * Function: GLCDDrawGBuf
@@ -116,7 +129,12 @@ void GLCDDrawGBuf();
 * Input:    x: координата, [0; 7]
 * Output:   none
 */
-void GLCDSetX(const uint8_t x);
+static inline void GLCDSetX(const uint8_t x)
+{
+	const bool 	cs1 = (x < 64), 
+				cs2 = (x >= 64);
+	GLCDWriteCommand(cs1, cs2, 0, 0, 0xB8 | x);
+}
 
 /*
 * Function: GLCDSetY
@@ -124,7 +142,10 @@ void GLCDSetX(const uint8_t x);
 * Input:    y: координата, [0; 63]
 * Output:   none
 */
-void GLCDSetY(const uint8_t y);
+static inline void GLCDSetY(const uint8_t y)
+{
+	GLCDWriteCommand(1, 1, 0, 0, 0x40 | y);
+}
 
 
 /*
@@ -134,15 +155,21 @@ void GLCDSetY(const uint8_t y);
 *			data: данные
 * Output:   none
 */
-void GLCDWriteDisplayData(const bool isCS1, const uint8_t data);
+static inline void GLCDWriteDisplayData(const bool isCS1, const uint8_t data)
+{
+	GLCDWriteCommand(isCS1, !isCS1, 0, 1, data);
+}
 
 /*
-* Function: GLCDReadData
+* Function: GLCDReadDisplayData
 * Desc:     Прочитать данные из памяти
 * Input:    none
 * Output:   данные
 */
-uint8_t GLCDReadData(void);
+static inline uint8_t GLCDReadDisplayData(const bool isCS1)
+{
+	return GLCDReadCommand(isCS1, 1);
+}
 
 
 #endif
