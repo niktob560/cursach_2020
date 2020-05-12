@@ -29,7 +29,7 @@ void GLCDSetPixel(const vect coords, const bool state)
 	{
 		GLCDSetX(byteNum);
 		GLCDSetY(coords.b);
-		GLCDWriteData(byte);
+		GLCDWriteDisplayData(coords.a < 64, byte);
 	}
 }
 
@@ -44,7 +44,7 @@ void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 {
 	GLCDSetX(coords.a / 8);
 	GLCDSetY(coords.b);
-	GLCDWriteData(pixels);
+	GLCDWriteDisplayData(coords.a < 64, pixels);
 }
 
 
