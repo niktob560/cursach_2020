@@ -7,6 +7,9 @@
 #include <font.h>
 
 #define GOBJECT_TEXT_SIZE 10
+#define GOBJECT_PRIMITIVE_ARRAY_SIZE 	5
+#define GOBJECT_TEXT_ARRAY_SIZE 		(5 + GOBJECT_TEXT_SIZE)
+#define GOBJECT_BUTTON_ARRAY_SIZE 		(6 + GOBJECT_TEXT_SIZE)
 
 typedef struct 
 {
