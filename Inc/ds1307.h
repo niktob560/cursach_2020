@@ -122,13 +122,13 @@ static inline datetime DS1307Datetime(const uint8_t reg[8])
 {
 	return (datetime)
 	{
-		DS1307Sec(reg[DS1307_SEC_ADDR]),
-		DS1307Min(reg[DS1307_MIN_ADDR]),
-		DS1307Hour(reg[DS1307_HOUR_ADDR]),
-		DS1307Date(reg[DS1307_DATE_ADDR]),
-		DS1307Month(reg[DS1307_MONTH_ADDR]),
-		DS1307Year(reg[DS1307_YEAR_ADDR]),
-		DS1307Day(reg[DS1307_DAY_ADDR])
+		DS1307Sec 	(reg[DS1307_SEC_ADDR]),
+		DS1307Min 	(reg[DS1307_MIN_ADDR]),
+		DS1307Hour 	(reg[DS1307_HOUR_ADDR]),
+		DS1307Date 	(reg[DS1307_DATE_ADDR]),
+		DS1307Month (reg[DS1307_MONTH_ADDR]),
+		DS1307Year 	(reg[DS1307_YEAR_ADDR]),
+		DS1307Day 	(reg[DS1307_DAY_ADDR])
 	};
 }
 

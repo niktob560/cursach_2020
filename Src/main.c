@@ -4,6 +4,7 @@
 #include <twi.h>
 #include <gobjects.h>
 #include <layout.h>
+#include <ds1307.h>
 
 #define FUNCS_NUM 10
 
@@ -91,6 +92,7 @@ int main()
 	init();
 	sei();
 	LayoutSetMainmenu();
+	DS1307Datetime((uint8_t[8]){0, 0, 0, 0, 0, 0, 0, 0});
 	//do nothing
 	while(1)
 	{
