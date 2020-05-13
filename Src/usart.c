@@ -14,7 +14,7 @@ uint16_t _usart0_txbuf_len_end = 0;
 */
 void USART0Send(const char __data)
 {
-	while(!(UCSR0A & (1 << UDRE0)));
+	while(!(UCSR0A & (1 << UDRE0))){}
 	UDR0 = (uint8_t)__data;
 	/*
 	 * Буффер передатчика может быть записан только

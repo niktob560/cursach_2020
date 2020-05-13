@@ -45,6 +45,13 @@ ISR(TIMER0_COMP_vect)
 
 void initTimers(void)
 {
+	// STATIC_ASSERT(false, A);
+	// _Static_assert(0, "A");
+	// CTC(sizeof(int)==4); 
+	// MAX(1, 2);
+	// const int a 7= 1, b = 2;
+	// const int c = MAX(a, b);
+	// STATIC_ASSERT(c == 1);
 					/*CTC; предделитель 1024*/
 	TCCR0 = (1 << WGM01) | (1 << CS02) | (1 << CS01) | (1 << CS00);
 	

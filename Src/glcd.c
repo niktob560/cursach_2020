@@ -53,7 +53,7 @@ void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 	else
 	{
 		uint8_t byte = GLCDReadDisplayData(cs1);
-		byte &= (uint8_t)~((1 << (8 - byteOffset)) - 1);
+		byte &= (uint8_t)(~(((uint8_t)(1 << (7 - byteOffset))) - 1) & 0xFF);
 		byte |= (uint8_t)(pixels >> byteOffset);
 		GLCDSetY(coords.b);
 		GLCDWriteDisplayData(cs1, byte);
@@ -62,7 +62,7 @@ void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 		GLCDSetY(coords.b);
 		byte = GLCDReadDisplayData(cs1);
 		byte &= (uint8_t)((1 << byteOffset) - 1);
-		byte |= (uint8_t)(pixels << (8 - byteOffset));
+		byte |= (uint8_t)(pixels << (7 - byteOffset));
 		GLCDSetY(coords.b);
 		GLCDWriteDisplayData(cs1, byte);
 	}

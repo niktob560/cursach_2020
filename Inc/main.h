@@ -7,6 +7,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdlib.h>
+
 
 typedef enum
 {
@@ -18,8 +20,6 @@ typedef struct
 {
 	uint8_t a, b;
 } vect;
-
-#define NULL 0x00
 
 
 int main(void);
@@ -91,6 +91,46 @@ void shiftLeft(uint8_t* arr, uint32_t len, uint32_t el);
 *	Output:		none
 */
 void shiftRight(uint8_t* arr, uint32_t len, uint32_t el);
+
+
+// #pragma GCC error "A"
+
+// #define _if #if
+// #define _endif #endif
+// #define _pragma #pragma
+
+#define ASSERT_CONCAT_(a, b) a##b
+#define ASSERT_CONCAT(a, b) ASSERT_CONCAT_(a, b)
+#define STATIC_ASSERT(e) enum { ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(e)) }
+
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-variable"
+// #define STATIC_ASSERT(COND,MSG) { if(!COND){ const char msg[] = "GCC error \" \""; _Pragma(msg); }}
+// #pragma GCC diagnostic pop
+
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-variable"
+// #define STATIC_ASSERT(COND,MSG) {static int static_assertion_##MSG[(COND)?1:-1] = {0}; static_assertion_##MSG[0]=*static_assertion_##MSG;}
+// #pragma GCC diagnostic pop
+
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+// #define CTASTR2(pre,post) pre ## post
+// #define CTASTR(pre,post) CTASTR2(pre,post)
+// #define STATIC_ASSERT(cond,msg) 
+//     typedef struct { int static_assertion_failed_ : !!(cond); } 
+//         CTASTR2(static_assertion_failed_,__COUNTER__)
+//         #pragma GCC diagnostic pop
+
+// #define STATIC_ASSERT(COND,MSG) typedef char static_assertion_##MSG[(!!(COND))*2-1]
+// token pasting madness:
+// #define COMPILE_TIME_ASSERT3(X,L) STATIC_ASSERT(X,static_assertion_at_line_##L)
+// #define COMPILE_TIME_ASSERT2(X,L) COMPILE_TIME_ASSERT3(X,L)
+// #define COMPILE_TIME_ASSERT(X)    COMPILE_TIME_ASSERT2(X,__LINE__)
+
+// #define CTC(X) ({ extern int __attribute__((error("assertion failure: '" #X "' not true"))) compile_time_check(); ((X)?0:compile_time_check()),0; })
+
+#define MAX(x,y) ((x)>(y)?(x):(y))
 
 
 
