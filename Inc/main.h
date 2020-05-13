@@ -8,20 +8,17 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-enum Bool
+typedef enum
 {
-	True = 1, 
-	False = 0,
-};
+	true = 1, 
+	false = 0,
+} bool;
 
 typedef struct 
 {
 	uint8_t a, b;
 } vect;
 
-#define bool enum Bool
-#define true True
-#define false False
 #define NULL 0x00
 
 
