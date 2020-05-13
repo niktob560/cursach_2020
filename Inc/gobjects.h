@@ -10,7 +10,7 @@
 
 typedef struct 
 {
-	const vect 	coords,
+	vect	 	coords,
 				size;
 	bool 		filled,
 				bordered;
@@ -18,19 +18,19 @@ typedef struct
 
 typedef struct 
 {
-	const vect 	coords,
+	vect 		coords,
 				size;
 	bool		inverted;
-	char text[GOBJECT_TEXT_SIZE];
+	char 		text[GOBJECT_TEXT_SIZE];
 } graph_text;
 
 typedef struct 
 {
-	const vect 	coords,
+	vect	 	coords,
 				size;
 	bool 		filled;
-	char text[GOBJECT_TEXT_SIZE];
-	const uint8_t clickSignal;
+	char 		text[GOBJECT_TEXT_SIZE];
+	uint8_t	 	clickSignal;
 } graph_button;
 
 /*
@@ -43,12 +43,21 @@ void GOBJECTDrawPrimitive(const graph_primitive* object);
 
 /*
 * Function: GOBJECTPrimitiveToArray
-* Desc:     Упаковать примитив в объект
+* Desc:     Упаковать примитив в массив
 * Input:    object: объект
 *			target: куда упаковать
 * Output:   none
 */
 void GOBJECTPrimitiveToArray(const graph_primitive* object, uint8_t* target);
+
+/*
+* Function: GOBJECTArrayToPrimitive
+* Desc:     Распаковать массив в примитив
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToPrimitive(const uint8_t* array, graph_primitive* target);
 
 /*
 * Function: GOBJECTDrawText
@@ -60,12 +69,21 @@ void GOBJECTDrawText(const graph_text* text);
 
 /*
 * Function: GOBJECTTextToArray
-* Desc:     Упаковать текст в объект
+* Desc:     Упаковать текст в массив
 * Input:    object: объект
 *			target: куда упаковать
 * Output:   none
 */
 void GOBJECTTextToArray(const graph_text* object, uint8_t* target);
+
+/*
+* Function: GOBJECTArrayToText
+* Desc:     Распаковать массив в текст
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToText(const uint8_t* array, graph_text* target);
 
 /*
 * Function: GOBJECTDrawButton
@@ -77,12 +95,21 @@ void GOBJECTDrawButton(const graph_button* btn);
 
 /*
 * Function: GOBJECTButtonToArray
-* Desc:     Упаковать текст в объект
+* Desc:     Упаковать текст в массив
 * Input:    object: объект
 *			target: куда упаковать
 * Output:   none
 */
 void GOBJECTButtonToArray(const graph_button* object, uint8_t* target);
+
+/*
+* Function: GOBJECTArrayToButton
+* Desc:     Распаковать массив в кнопку
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToButton(const uint8_t* array, graph_button* target);
 
 
 

@@ -114,3 +114,62 @@ void GOBJECTButtonToArray(const graph_button* object, uint8_t* target)
 	target++;
 	memcpy(target, &(object->text[0]), GOBJECT_TEXT_SIZE);
 }
+
+
+
+
+/*
+* Function: GOBJECTArrayToPrimitive
+* Desc:     Распаковать массив в примитив
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToPrimitive(const uint8_t* array, graph_primitive* target)
+{
+	ArrayToVect(array, &target->coords);
+	array += 2;
+	ArrayToVect(array, &target->size);
+	array += 2;
+	target->bordered 	= *array & 1;
+	target->filled		= (*array >> 1) & 1;
+}
+
+
+/*
+* Function: GOBJECTArrayToText
+* Desc:     Распаковать массив в текст
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToText(const uint8_t* array, graph_text* target)
+{
+	ArrayToVect(array, &target->coords);
+	array += 2;
+	ArrayToVect(array, &target->size);
+	array += 2;
+	target->inverted	= *array & 1;
+	array++;
+	memcpy(target->text, array, GOBJECT_TEXT_SIZE);
+}
+
+/*
+* Function: GOBJECTArrayToButton
+* Desc:     Распаковать массив в кнопку
+* Input:    array: массив
+*			target: куда распаковать
+* Output:   none
+*/
+void GOBJECTArrayToButton(const uint8_t* array, graph_button* target)
+{
+	ArrayToVect(array, &target->coords);
+	array += 2;
+	ArrayToVect(array, &target->size);
+	array += 2;
+	target->filled	= *array & 1;
+	array++;
+	target->clickSignal = *array;
+	array++;
+	memcpy(target->text, array, GOBJECT_TEXT_SIZE);
+}

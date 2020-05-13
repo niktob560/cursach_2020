@@ -35,6 +35,11 @@ inline void VectToArray(const vect v, uint8_t* target)
 	target[1] = v.b;
 }
 
+inline void ArrayToVect(const uint8_t* array, vect* target)
+{
+	*target = (vect){array[0], array[1]};
+}
+
 inline bool getBit(uint8_t byte, uint8_t i)
 {
 	return (byte & (1 << i))? true : false;
