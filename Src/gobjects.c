@@ -59,3 +59,58 @@ void GOBJECTDrawButton(const graph_button* btn)
 	const graph_text txt = {btn->coords, btn->size, btn->filled, {*btn->text}};
 	GOBJECTDrawText(&txt);
 }
+
+
+/*
+* Function: GOBJECTPrimitiveToArray
+* Desc:     Упаковать примитив в объект
+* Input:    object: объект
+*			target: куда упаковать
+* Output:   none
+*/
+void GOBJECTPrimitiveToArray(const graph_primitive* object, uint8_t* target)
+{
+	VectToArray(object->coords, target);
+	target += 2;
+	VectToArray(object->size, target);
+	target += 2;
+	*target = (uint8_t)((object->filled << 1) | (object->bordered));
+}
+
+/*
+* Function: GOBJECTTextToArray
+* Desc:     Упаковать текст в объект
+* Input:    object: объект
+*			target: куда упаковать
+* Output:   none
+*/
+void GOBJECTTextToArray(const graph_text* object, uint8_t* target)
+{
+	VectToArray(object->coords, target);
+	target += 2;
+	VectToArray(object->size, target);
+	target += 2;
+	*target = object->inverted;
+	target++;
+	memcpy(target, &(object->text[0]), GOBJECT_TEXT_SIZE);
+}
+
+/*
+* Function: GOBJECTButtonToArray
+* Desc:     Упаковать текст в объект
+* Input:    object: объект
+*			target: куда упаковать
+* Output:   none
+*/
+void GOBJECTButtonToArray(const graph_button* object, uint8_t* target)
+{
+	VectToArray(object->coords, target);
+	target += 2;
+	VectToArray(object->size, target);
+	target += 2;
+	*target = object->filled;
+	target++;
+	*target = object->clickSignal;
+	target++;
+	memcpy(target, &(object->text[0]), GOBJECT_TEXT_SIZE);
+}

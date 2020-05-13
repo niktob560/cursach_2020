@@ -29,6 +29,12 @@ int main(void);
 
 #define _delay_ns(_delay) _delay_us(_delay * 10)
 
+inline void VectToArray(const vect v, uint8_t* target)
+{
+	target[0] = v.a;
+	target[1] = v.b;
+}
+
 inline bool getBit(uint8_t byte, uint8_t i)
 {
 	return (byte & (1 << i))? true : false;
