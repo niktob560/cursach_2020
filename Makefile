@@ -24,7 +24,7 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 vpath %.h $(sort $(dir $(C_HEADERS)))
 
 
-all: date size Dir $(C_HEADERS)
+all: date size Dir $(C_HEADERS) codecheck.sh
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 	@echo -e '\033[1;32mCC\t'$<'\t->\t'$@'\033[0m'
@@ -71,3 +71,7 @@ date:
 	@echo -e '\033[1;32m'"Starting build at " | tr -d '\n'
 	@date
 	@echo -e '\033[0m'
+
+.PHONY: codecheck.sh
+codecheck.sh: $(C_SOURCES)
+	@./codecheck.sh
