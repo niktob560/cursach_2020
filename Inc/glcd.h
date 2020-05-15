@@ -116,12 +116,12 @@ static inline void GLCDOn()
 }
 
 /*
-* Function: GLCDSetX
+* Function: GLCDSetX_byte
 * Desc:     Записать в регистр координаты X
 * Input:    x: координата, [0; 15], в байтах
 * Output:   none
 */
-static inline void GLCDSetX(const uint8_t x)
+static inline void GLCDSetX_byte(const uint8_t x)
 {
 	const bool 	cs1 = (x < 8), 
 				cs2 = (x >= 8);

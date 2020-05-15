@@ -19,7 +19,7 @@ void GLCDSetPixel(const vect coords, const bool state)
 	uint8_t byte = 0;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		GLCDSetX(byteNum);
+		GLCDSetX_byte(byteNum);
 		GLCDSetY(coords.b);
 		byte = GLCDReadDisplayData(coords.a < 64);
 	}
@@ -29,7 +29,7 @@ void GLCDSetPixel(const vect coords, const bool state)
 			/*Записать новый байт*/
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		GLCDSetX(byteNum);
+		GLCDSetX_byte(byteNum);
 		GLCDSetY(coords.b);
 		GLCDWriteDisplayData(coords.a < 64, byte);
 	}
@@ -46,7 +46,7 @@ void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 {
 	const uint8_t byteOffset = coords.a % 8;
 	const bool cs1 = coords.a < 64;
-	GLCDSetX(coords.a / 8);
+	GLCDSetX_byte(coords.a / 8);
 	GLCDSetY(coords.b);
 	if(byteOffset == 0)
 	{
@@ -60,7 +60,7 @@ void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 		GLCDSetY(coords.b);
 		GLCDWriteDisplayData(cs1, byte);
 
-		GLCDSetX((uint8_t)((coords.a / 8) + 1));
+		GLCDSetX_byte((uint8_t)((coords.a / 8) + 1));
 		GLCDSetY(coords.b);
 		byte = GLCDReadDisplayData(cs1);
 		byte &= (uint8_t)((1 << byteOffset) - 1);
@@ -203,8 +203,7 @@ void GLCDDrawGbuf()
 {
 	for(uint8_t x_byte = 0; x_byte < GLCD_WIDTH_DWORD; x_byte++)
 	{
-		//TODO: rename to GLCDSetX_byte
-		GLCDSetX(x_byte);
+		GLCDSetX_byte(x_byte);
 		GLCDSetY(0);
 		for(uint8_t y = 0; y < GLCD_HEIGHT; y++)
 		{
