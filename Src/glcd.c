@@ -2,6 +2,8 @@
 #include <font.h>
 
 
+uint8_t GLCD_gbuf [GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {0};
+
 /*
 * Function: GLCDSetPixel
 * Desc:     Установить пиксель с координатами {x,y}
@@ -187,4 +189,26 @@ uint8_t GLCDReadCommand(const bool isCS1, const bool rs)
 		turnPortOff(&GLCD_SPORT, 1 << GLCD_RW);
 	}
 	return ret;
+}
+
+
+
+/*
+* Function: GLCDDrawGbuf
+* Desc:     Отрисовать на дисплее графический буфер
+* Input:    none
+* Output:   none
+*/
+void GLCDDrawGbuf()
+{
+	for(uint8_t x_byte = 0; x_byte < GLCD_WIDTH_DWORD; x_byte++)
+	{
+		//TODO: rename to GLCDSetX_byte
+		GLCDSetX(x_byte);
+		GLCDSetY(0);
+		for(uint8_t y = 0; y < GLCD_HEIGHT; y++)
+		{
+			GLCDWriteDisplayData((x_byte < 8), GLCD_gbuf[x_byte][y]);
+		}
+	}
 }

@@ -164,4 +164,12 @@ static inline uint8_t GLCDReadDisplayData(const bool isCS1)
 }
 
 
+/*
+* Function: GLCDDrawGbuf
+* Desc:     Отрисовать на дисплее графический буфер
+* Input:    none
+* Output:   none
+*/
+void GLCDDrawGbuf();
+
 #endif
