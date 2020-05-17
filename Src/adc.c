@@ -53,7 +53,7 @@ void ADCSetRef(uint8_t __ref)
 }
 
 /*
-* Function: ADCSetPrescaler
+* Function: ADCSetPrescalerw
 * Desc:     Установить предделитель
 * Input:    __prescaler: предделитель
 * Output:   none
@@ -137,7 +137,7 @@ void ADCInit(void)
 	ADCFlush();
 	ADCSetRef(ADC_REF_AVCC);
 	ADMUX |= _currPin;
-	ADCSetPrescaler(ADC_PRESCALER_32);
+	ADCSetPrescaler(ADC_PRESCALER_64);
 	ADCSendControl(ADC_CONTROL_INTERRUPT_EN);
 	ADCEnable();
 	ADCStartConvert();

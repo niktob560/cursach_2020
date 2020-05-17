@@ -45,28 +45,23 @@ void GLCDSetPixel(const vect coords, const bool state)
 void GLCDSet8Pixels(const vect coords, const uint8_t pixels)
 {
 	const uint8_t byteOffset = coords.a % 8;
-	const bool cs1 = coords.a < 64;
 	GLCDSetX_byte(coords.a / 8);
 	GLCDSetY(coords.b);
 	if(byteOffset == 0)
 	{
-		GLCDWriteDisplayData(coords.a < 64, pixels);
+		GLCD_gbuf[coords.a / 8][coords.b] = pixels;
 	}
 	else
 	{
-		uint8_t byte = GLCDReadDisplayData(cs1);
+		uint8_t byte = GLCD_gbuf[coords.a / 8][coords.b];
 		byte &= (uint8_t)(~(((uint8_t)(1 << (7 - byteOffset))) - 1) & 0xFF);
 		byte |= (uint8_t)(pixels >> byteOffset);
-		GLCDSetY(coords.b);
-		GLCDWriteDisplayData(cs1, byte);
+		GLCD_gbuf[coords.a / 8][coords.b] = byte;
 
-		GLCDSetX_byte((uint8_t)((coords.a / 8) + 1));
-		GLCDSetY(coords.b);
-		byte = GLCDReadDisplayData(cs1);
+		byte = GLCD_gbuf[coords.a / 8][coords.b + 1];
 		byte &= (uint8_t)((1 << byteOffset) - 1);
 		byte |= (uint8_t)(pixels << (7 - byteOffset));
-		GLCDSetY(coords.b);
-		GLCDWriteDisplayData(cs1, byte);
+		GLCD_gbuf[coords.a / 8][coords.b + 1] =  byte;
 	}
 }
 
