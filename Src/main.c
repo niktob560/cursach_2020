@@ -1,6 +1,5 @@
 #include <main.h>
 #include <glcd.h>
-#include <usart.h>
 #include <twi.h>
 #include <gobjects.h>
 #include <layout.h>
@@ -67,29 +66,17 @@ void initTimers(void)
 
 void init(void)
 {
-	#ifdef DEBUG
-	USART0Begin(115200);
-	#endif
 	/*порт управления экрана*/
 	DDRE = 0xFF;
 	/*порт данных экрана*/
 	DDRA = 0xFF;
 
 	GLCDOn();
-	#ifdef DEBUG
-	USART0Println("GLCD ON");
-	#endif
 
 			/*100КГц*/
 	TWISetFreq(100000);
-	#ifdef DEBUG
-	USART0Println("TWI ON");
-	#endif
 
 	initTimers();
-	#ifdef DEBUG
-	USART0Println("TIMERS ON");
-	#endif
 }
 
 
