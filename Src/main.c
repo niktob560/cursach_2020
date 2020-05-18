@@ -51,8 +51,8 @@ void initTimers(void)
 	// const int a 7= 1, b = 2;
 	// const int c = MAX(a, b);
 	// STATIC_ASSERT(c == 1);
-					/*CTC; предделитель 1024*/
-	TCCR0 = (1 << WGM01) | (1 << CS02) | (1 << CS01) | (1 << CS00);
+					/*CTC; предделитель 64*/
+	TCCR0 = (1 << WGM01) | (1 << CS02) | (0 << CS01) | (0 << CS00);
 	
 	/*разрешить прерывание по совпадению*/
 	TIMSK = 1 << OCIE0;
@@ -61,7 +61,7 @@ void initTimers(void)
 	TIFR = 1 << OCF0;
 
 	/*с чем сравнивать*/
-	OCR0 = 100;
+	OCR0 = 125;
 }
 
 void init(void)
