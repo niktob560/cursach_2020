@@ -183,13 +183,16 @@ uint8_t GLCDReadCommand(const bool isCS1, const bool rs)
 */
 void GLCDDrawGbuf()
 {
-	for(uint8_t x_byte = 0; x_byte < GLCD_WIDTH_DWORD; x_byte++)
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		GLCDSetX_byte(x_byte);
-		GLCDSetY(0);
-		for(uint8_t y = 0; y < GLCD_HEIGHT; y++)
+		for(uint8_t x_byte = 0; x_byte < GLCD_WIDTH_DWORD; x_byte++)
 		{
-			GLCDWriteDisplayData((x_byte < 8), GLCD_gbuf[x_byte][y]);
+			GLCDSetX_byte(x_byte);
+			GLCDSetY(0);
+			for(uint8_t y = 0; y < GLCD_HEIGHT; y++)
+			{
+				GLCDWriteDisplayData((x_byte < 8), GLCD_gbuf[x_byte][y]);
+			}
 		}
 	}
 }
