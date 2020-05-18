@@ -13,26 +13,13 @@ uint8_t GLCD_gbuf [GLCD_WIDTH_DWORD][GLCD_HEIGHT] = {0};
 */
 void GLCDSetPixel(const vect coords, const bool state)
 {
+
 	const uint8_t 	byteOffset = coords.a % 8,
 					byteNum    = coords.a / 8;
-			/*Сохранить текущий байт*/
-	uint8_t byte = 0;
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		GLCDSetX_byte(byteNum);
-		GLCDSetY(coords.b);
-		byte = GLCDReadDisplayData(coords.a < 64);
-	}
+	uint8_t byte = GLCD_gbuf[byteNum][coords.b];
 	byte &= (uint8_t)~(1 << byteOffset);
-	byte |= (uint8_t)(state << byteOffset);
-
-			/*Записать новый байт*/
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-	{
-		GLCDSetX_byte(byteNum);
-		GLCDSetY(coords.b);
-		GLCDWriteDisplayData(coords.a < 64, byte);
-	}
+	byte |= (uint8_t)~(state << byteOffset);
+	GLCD_gbuf[byteNum][coords.b] = byte;
 }
 
 /*
