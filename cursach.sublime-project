@@ -1,0 +1,22 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"SublimeLinter.linters.cpplint.disable": false,
+		"SublimeLinter.linters.cpplint.args": ["--addon=cert", "-q"], 
+		"SublimeLinter.linters.cpplint.std": ["c99"],
+		"SublimeLinter.linters.gcc.disable": false,
+		"SublimeLinter.linters.gcc.executable": ["/bin/avr-gcc"],
+	     "SublimeLinter.linters.gcc.args": ["-Os", "-Wno-write-strings", "-Wcast-align", "-Wcast-qual", "-Wconversion", "-Wduplicated-branches", "-Wduplicated-cond", "-Wfloat-equal", "-Wlogical-op", "-Wredundant-decls", "-Wsign-conversion", "-Werror", "-Werror", "-Wall", "-Wextra", "-Wpedantic", "-pedantic-errors", "-fsyntax-only", "-mmcu=atmega128"],
+	     "SublimeLinter.linters.gcc.I": [
+	                "${file_path}/Inc",
+	                "${file_path}/../Inc",
+	                "${folder}/Inc",
+	                "/usr/avr/",
+	            ],
+	}
+}
