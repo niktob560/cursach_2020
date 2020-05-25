@@ -39,6 +39,13 @@ static const graph_button		LayoutSettingsButtons	[GOBJECT_BUTTONS]	PROGMEM = {0}
 */
 void LayoutSet(const graph_primitive* prim, const graph_text* txt, const graph_button* btn);
 
+/*
+* Function: LayoutDraw
+* Desc:     Отрисовть текущую разметку
+* Input:    none
+* Output:   none
+*/
+void LayoutDraw(void);
 
 /*
 * Function: LayoutSetMainmenu

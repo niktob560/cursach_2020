@@ -25,3 +25,34 @@ void LayoutSet(const graph_primitive* prim, const graph_text* txt, const graph_b
 	GOBJECTArrayToText		((const uint8_t*)&txtArray, LayoutTexts);
 	GOBJECTArrayToButton	((const uint8_t*)&btnArray, LayoutButtons);
 }
+
+void LayoutDrawPrimitives(void)
+{
+	for(uint8_t i = 0; i < GOBJECT_PRIMITIVES; i++)
+	{
+		GOBJECTDrawPrimitive(&LayoutPrimitives[i]);
+	}
+}
+
+void LayoutDrawTexts(void)
+{
+	for(uint8_t i = 0; i < GOBJECT_TEXTS; i++)
+	{
+		GOBJECTDrawText(&LayoutTexts[i]);
+	}
+}
+
+void LayoutDrawButtons(void)
+{
+	for(uint8_t i = 0; i < GOBJECT_BUTTONS; i++)
+	{
+		GOBJECTDrawButton(&LayoutButtons[i]);
+	}
+}
+
+void LayoutDraw(void)
+{
+	LayoutDrawPrimitives();
+	LayoutDrawTexts();
+	LayoutDrawButtons();
+}

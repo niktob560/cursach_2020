@@ -16,7 +16,7 @@ static inline int b()
 }
 
 /*Массив ф-ций для вызова*/
-void (*funcsArray[FUNCS_NUM])() = {a};
+void (*funcsArray[FUNCS_NUM])() = {LayoutDraw};
 volatile uint8_t currFuncIndex = 0;
 volatile bool systemIdle = true;
 
