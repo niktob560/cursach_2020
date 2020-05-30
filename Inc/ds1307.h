@@ -30,92 +30,62 @@ typedef enum
 static inline uint8_t DS1307Halt(const uint8_t reg) {	return reg >> 7; }
 
 
-
-static inline uint8_t DS1307Sec1(const uint8_t reg) {	return reg & 0x0F; }
-
+static inline uint8_t DS1307Sec(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 0x07) * 10)); }
 
 
-static inline uint8_t DS1307Sec10(const uint8_t reg) { return (reg >> 4) & 0x07; }
+static inline uint8_t DS1307Min(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
 
 
-
-static inline uint8_t DS1307Sec(const uint8_t reg) { return (uint8_t)(DS1307Sec1(reg) + (DS1307Sec10(reg) * 10)); }
-
+static inline uint8_t DS1307Hour(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 1) * 10)); }
 
 
-static inline uint8_t DS1307Min1(const uint8_t reg) { return reg & 0x0F; }
+static inline uint8_t DS1307Date(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
 
 
-
-static inline uint8_t DS1307Min10(const uint8_t reg) { return reg >> 4; }
-
+static inline uint8_t DS1307Month(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
 
 
-static inline uint8_t DS1307Min(const uint8_t reg) { return (uint8_t)(DS1307Min1(reg) + (DS1307Min10(reg) * 10)); }
-
-
-
-static inline uint8_t DS1307Hour1(const uint8_t reg) { return reg & 0x0F; }
-
-
-
-static inline uint8_t DS1307Hour10(const uint8_t reg) { return (reg >> 4) & 1; }
-
-
-
-static inline uint8_t DS1307Hour(const uint8_t reg) { return (uint8_t)(DS1307Hour1(reg) + (DS1307Hour10(reg) * 10)); }
-
-
-
-static inline uint8_t DS1307Date1(const uint8_t reg) { return reg & 0x0F; }
-
-
-
-static inline uint8_t DS1307Date10(const uint8_t reg) { return reg >> 4; }
-
-
-
-static inline uint8_t DS1307Date(const uint8_t reg) { return (uint8_t)(DS1307Date1(reg) + (DS1307Date10(reg) * 10)); }
-
-
-
-static inline uint8_t DS1307Month1(const uint8_t reg) { return reg & 0x0F; }
-
-
-
-static inline uint8_t DS1307Month10(const uint8_t reg) { return reg >> 4; }
-
-
-
-static inline uint8_t DS1307Month(const uint8_t reg) { return (uint8_t)(DS1307Month1(reg) + (DS1307Month10(reg) * 10)); }
-
-
-
-static inline uint8_t DS1307Year1(const uint8_t reg) { return reg & 0x0F; }
-
-
-
-static inline uint8_t DS1307Year10(const uint8_t reg) { return reg >> 4; }
-
-
-
-static inline uint16_t DS1307Year(const uint8_t reg) { return (uint16_t)(DS1307Year1(reg) + (DS1307Year10(reg) * 10)); }
-
+static inline uint16_t DS1307Year(const uint8_t reg) { return (uint16_t)((reg & 0x0F) + ((reg >> 4) * 10) + 2000); }
 
 
 static inline Day DS1307Day(const uint8_t reg) { return reg; }
 
 
+/*Ф-ции обратного преобразования из даты-времени в регистры памяти часов*/
+
+
+static inline uint8_t DS1307ToSec(const uint8_t sec) {	return (uint8_t)(((sec / 10) << 4) | ((sec % 10) & 0x0F)); }
+
+
+static inline uint8_t DS1307ToMin(const uint8_t min) { return (uint8_t)(((min / 10) << 4) | ((min % 10) & 0x0F)); }
+
+
+static inline uint8_t DS1307ToHour(const uint8_t hour) { return (uint8_t)(((hour / 10) << 4) | ((hour % 10) & 0x0F)); }
+
+
+static inline uint8_t DS1307ToDate(const uint8_t date) { return (uint8_t)(((date / 10) << 4) | ((date % 10) & 0x0F)); }
+
+
+static inline uint8_t DS1307ToMonth(const uint8_t month) { return (uint8_t)(((month / 10) << 4) | ((month % 10) & 0x0F)); }
+
+
+static inline uint8_t DS1307ToYear(const uint16_t year) { return (uint8_t)((((year % 100) / 10) << 4) | ((year % 10) & 0x0F)); }
+
+
+
+static inline Day DS1307ToDay(const uint8_t day) { return day; }
+
+
 
 typedef struct 
 {
-	uint8_t seconds,
-			minutes,
-			hours,
-			date,
-			month;
-	uint16_t year;
-	Day day;
+	uint8_t 	seconds,
+				minutes,
+				hours,
+				date,
+				month;
+	uint16_t 	year;
+	Day 		day;
 } datetime;
 
 static inline datetime DS1307Datetime(const uint8_t reg[8])
@@ -130,6 +100,17 @@ static inline datetime DS1307Datetime(const uint8_t reg[8])
 		DS1307Year 	(reg[DS1307_YEAR_ADDR]),
 		DS1307Day 	(reg[DS1307_DAY_ADDR])
 	};
+}
+
+static inline void DS1307FromDatetime(const datetime DateTime, uint8_t ret[8])
+{
+	ret[0] = DS1307ToSec(DateTime.seconds);
+	ret[1] = DS1307ToMin(DateTime.minutes);
+	ret[2] = DS1307ToHour(DateTime.hours);
+	ret[3] = DS1307ToDay(DateTime.day);
+	ret[4] = DS1307ToDate(DateTime.date);
+	ret[5] = DS1307ToMonth(DateTime.month);
+	ret[6] = DS1307ToYear(DateTime.year);
 }
 
 #endif
