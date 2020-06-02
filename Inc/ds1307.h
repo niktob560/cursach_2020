@@ -27,25 +27,43 @@ typedef enum
 
 /*Ф-ции преобразования в дату-время из регистров, полученных из памяти часов*/
 
-static inline uint8_t DS1307Halt(const uint8_t reg) {	return reg >> 7; }
+static inline uint8_t 	DS1307Halt(const uint8_t reg) { return reg >> 7; }
 
 
-static inline uint8_t DS1307Sec(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 0x07) * 10)); }
+static inline uint8_t 	DS1307Sec(const uint8_t reg) 
+{
+	return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 0x07) * 10));
+}
 
 
-static inline uint8_t DS1307Min(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
+static inline uint8_t 	DS1307Min(const uint8_t reg) 
+{
+	return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10));
+}
 
 
-static inline uint8_t DS1307Hour(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 1) * 10)); }
+static inline uint8_t 	DS1307Hour(const uint8_t reg) 
+{
+	return (uint8_t)((reg & 0x0F) + (((reg >> 4) & 1) * 10));
+}
 
 
-static inline uint8_t DS1307Date(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
+static inline uint8_t 	DS1307Date(const uint8_t reg) 
+{
+	return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10));	
+}
 
 
-static inline uint8_t DS1307Month(const uint8_t reg) { return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10)); }
+static inline uint8_t 	DS1307Month(const uint8_t reg) 
+{
+	return (uint8_t)((reg & 0x0F) + ((reg >> 4) * 10));
+}
 
 
-static inline uint16_t DS1307Year(const uint8_t reg) { return (uint16_t)((reg & 0x0F) + ((reg >> 4) * 10) + 2000); }
+static inline uint16_t 	DS1307Year(const uint8_t reg) 
+{
+	return (uint16_t)((reg & 0x0F) + ((reg >> 4) * 10) + 2000);
+}
 
 
 static inline Day DS1307Day(const uint8_t reg) { return reg; }
@@ -54,22 +72,40 @@ static inline Day DS1307Day(const uint8_t reg) { return reg; }
 /*Ф-ции обратного преобразования из даты-времени в регистры памяти часов*/
 
 
-static inline uint8_t DS1307ToSec(const uint8_t sec) {	return (uint8_t)(((sec / 10) << 4) | ((sec % 10) & 0x0F)); }
+static inline uint8_t DS1307ToSec(const uint8_t sec) 
+{
+	return (uint8_t)(((sec / 10) << 4) | ((sec % 10) & 0x0F));
+}
 
 
-static inline uint8_t DS1307ToMin(const uint8_t min) { return (uint8_t)(((min / 10) << 4) | ((min % 10) & 0x0F)); }
+static inline uint8_t DS1307ToMin(const uint8_t min) 
+{
+	return (uint8_t)(((min / 10) << 4) | ((min % 10) & 0x0F));
+}
 
 
-static inline uint8_t DS1307ToHour(const uint8_t hour) { return (uint8_t)(((hour / 10) << 4) | ((hour % 10) & 0x0F)); }
+static inline uint8_t DS1307ToHour(const uint8_t hour) 
+{
+	return (uint8_t)(((hour / 10) << 4) | ((hour % 10) & 0x0F));
+}
 
 
-static inline uint8_t DS1307ToDate(const uint8_t date) { return (uint8_t)(((date / 10) << 4) | ((date % 10) & 0x0F)); }
+static inline uint8_t DS1307ToDate(const uint8_t date) 
+{
+	return (uint8_t)(((date / 10) << 4) | ((date % 10) & 0x0F));
+}
 
 
-static inline uint8_t DS1307ToMonth(const uint8_t month) { return (uint8_t)(((month / 10) << 4) | ((month % 10) & 0x0F)); }
+static inline uint8_t DS1307ToMonth(const uint8_t month) 
+{
+	return (uint8_t)(((month / 10) << 4) | ((month % 10) & 0x0F));
+}
 
 
-static inline uint8_t DS1307ToYear(const uint16_t year) { return (uint8_t)((((year % 100) / 10) << 4) | ((year % 10) & 0x0F)); }
+static inline uint8_t DS1307ToYear(const uint16_t year) 
+{
+	return (uint8_t)((((year % 100) / 10) << 4) | ((year % 10) & 0x0F));
+}
 
 
 
