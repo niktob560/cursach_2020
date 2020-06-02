@@ -9,12 +9,15 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
+#ifndef bool
 
 typedef enum
 {
 	true = 1, 
 	false = 0,
 } bool;
+
+#endif /*ifndef bool*/
 
 typedef struct 
 {
@@ -70,7 +73,7 @@ inline void togglePort(volatile uint8_t* port, uint8_t mask)
 
 /*
 *	Function:	shiftLeft
-*	Desc:		Сдвинуть массив влево на N элементов
+*	Desc:		Сдвинуть массив влево на N элементов(с потерями)
 *	Input:		arr: 	указатель на массив
 *				len:	длина массива
 *				el:		на сколько сдвинуть
@@ -84,7 +87,7 @@ void shiftLeft(uint8_t* arr, uint32_t len, uint32_t el);
 
 /*
 *	Function:	shiftRight
-*	Desc:		Сдвинуть массив вправо на N элементов
+*	Desc:		Сдвинуть массив вправо на N элементов(с потерями)
 *	Input:		arr:	указатель на массив
 *				len: 	длина массива
 *				el:		на сколько сдвинуть
