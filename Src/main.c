@@ -10,28 +10,31 @@
 
 /*Массив ф-ций для вызова*/
 void (*funcsArray[FUNCS_NUM])() = {LayoutDraw};
+/*Текущая задача*/
 volatile uint8_t currFuncIndex = 0;
-volatile bool systemIdle = true;
+/*Массив флагов для блокировки вызова*/
+volatile bool tasksRunned[FUNCS_NUM] = {false};
 
 
 ISR(TIMER0_COMP_vect)
 {
-	if(systemIdle)
+	if(funcsArray[currFuncIndex] != NULL)
 	{
-		if(funcsArray[currFuncIndex] != NULL)
+
+		if(!tasksRunned[currFuncIndex])
 		{
-			systemIdle = false;
+			tasksRunned[currFuncIndex] = true;
 			sei();
 			funcsArray[currFuncIndex]();
 			cli();
-			systemIdle = true;
+			tasksRunned[currFuncIndex] = false;
 		}
-
-		if(currFuncIndex >= FUNCS_NUM - 1)
-			currFuncIndex = 0;
-		else
-			currFuncIndex++;
 	}
+
+	if(currFuncIndex >= FUNCS_NUM - 1)
+		currFuncIndex = 0;
+	else
+		currFuncIndex++;
 }
 
 
