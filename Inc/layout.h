@@ -16,6 +16,8 @@
 #define LAYOUT_DATESET_TEXT_ID_DAY		1
 #define LAYOUT_DATESET_TEXT_ID_DATE		2
 
+#define LAYOUT_BUTTON_SETTINGS			15
+
 #define LAYOUT_BUTTON_H_UP				0
 #define LAYOUT_BUTTON_H_DOWN			1
 
@@ -50,7 +52,7 @@ static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {	{{0,
 																						{{0, 28}, {GLCD_WIDTH, 10}, NOT_INVERTED, "SAT", 1},	/*день недели*/
 																						{{8, 41}, {GLCD_WIDTH, 15}, NOT_INVERTED, "01.01.2000", 1.5}	/*дата*/
 																						};
-static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
+static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {	{{0, 54}, {8, 10}, FILLED, {(char)-121}, 1, LAYOUT_BUTTON_SETTINGS}};
 
 static const graph_primitive 	LayoutDateSetPrimitives [GOBJECT_PRIMITIVES]PROGMEM = {	{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
 static const graph_text 		LayoutDateSetTexts 		[GOBJECT_TEXTS]		PROGMEM = {	{{0, 10}, {GLCD_WIDTH, 10}, INVERTED, "00:00:00", 1},	/*время*/
