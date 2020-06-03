@@ -81,11 +81,6 @@ static const graph_button		LayoutDateSetButtons	[GOBJECT_BUTTONS]	PROGMEM = { {{
 																						{{72, 10}, {8 * 6, 10}, NOT_FILLED, "SUBMIT", 1, 14}	/*SUBMIT*/
 																						};
 
-static const graph_primitive 	LayoutSettingsPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {0};
-static const graph_text 		LayoutSettingsTexts 	[GOBJECT_TEXTS]		PROGMEM = {0};
-static const graph_button		LayoutSettingsButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
-
-
 /*
 * Function: LayoutSet
 * Desc:     Установить текущую разметку как указанную
@@ -124,16 +119,6 @@ static inline void LayoutSetMainmenu()
 static inline void LayoutSetDateSet()
 {
 	LayoutSet(LayoutDateSetPrimitives, LayoutDateSetTexts, LayoutDateSetButtons);
-}
-/*
-* Function: LayoutSetSettings
-* Desc:     Установить текущую разметку как настройки
-* Input:    none
-* Output:   none
-*/
-static inline void LayoutSetSettings()
-{
-	LayoutSet(LayoutSettingsPrimitives, LayoutSettingsTexts, LayoutSettingsButtons);
 }
 
 #endif
