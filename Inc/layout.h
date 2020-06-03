@@ -52,7 +52,7 @@ static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {	{{0,
 																						};
 static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
 
-static const graph_primitive 	LayoutDateSetPrimitives [GOBJECT_PRIMITIVES]PROGMEM = {	{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, FILLED, BORDERED}};
+static const graph_primitive 	LayoutDateSetPrimitives [GOBJECT_PRIMITIVES]PROGMEM = {	{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
 static const graph_text 		LayoutDateSetTexts 		[GOBJECT_TEXTS]		PROGMEM = {	{{0, 10}, {GLCD_WIDTH, 10}, INVERTED, "", 1},	/*время*/
 																						{{0, 44}, {24, 10}, INVERTED, "", 1},			/*день недели*/
 																						{{48, 44}, {GLCD_WIDTH, 10}, INVERTED, "", 1}	/*дата*/
@@ -78,7 +78,7 @@ static const graph_button		LayoutDateSetButtons	[GOBJECT_BUTTONS]	PROGMEM = { {{
 																						{{8, 34}, {8, 10}, FILLED, {2}, 1, 12},		/*день недели*/
 																						{{8, 54}, {8, 10}, FILLED, {3}, 1, 13},
 
-																						{{72, 10}, {8 * 6, 10}, FILLED, "SUBMIT", 1, 14}	/*SUBMIT*/
+																						{{72, 10}, {8 * 6, 10}, NOT_FILLED, "SUBMIT", 1, 14}	/*SUBMIT*/
 																						};
 
 static const graph_primitive 	LayoutSettingsPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {0};
