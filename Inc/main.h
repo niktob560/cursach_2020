@@ -24,6 +24,11 @@ typedef struct
 	uint8_t a, b;
 } vect;
 
+typedef struct 
+{
+	uint16_t a, b;
+} dvect;
+
 
 int main(void);
 
