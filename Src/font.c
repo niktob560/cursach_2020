@@ -1,7 +1,7 @@
 #include <font.h>
 
 
-void FontScaleUp(uint8_t* target, char c, uint8_t scale)
+void FontScaleUp(uint8_t* target, const char c, const float scale)
 {
 	uint8_t pixmap[8];
 	FontGetPixmap(pixmap, c);

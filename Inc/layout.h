@@ -15,7 +15,7 @@ extern graph_button		LayoutButtons	[GOBJECT_BUTTONS];
 
 
 static const graph_primitive 	LayoutMainmenuPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
-static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {0};
+static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {{{0, 0}, {GLCD_WIDTH, 20}, NOT_INVERTED, "", 2}};
 static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
 
 static const graph_primitive 	LayoutDateSetPrimitives [GOBJECT_PRIMITIVES]PROGMEM = {0};

@@ -84,7 +84,7 @@ void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap);
 *			scale: масштаб символа
 * Output:   none
 */
-void GLCDDrawSymbol(const vect coords, const char c, uint8_t scale);
+void GLCDDrawSymbol(const vect coords, const char c, float scale);
 
 /*
 * Function: GLCDDrawText
@@ -94,7 +94,7 @@ void GLCDDrawSymbol(const vect coords, const char c, uint8_t scale);
 *			scale: масштаб символов
 * Output:   none
 */
-void GLCDDrawText(const vect coords, const char* text, uint8_t scale);
+void GLCDDrawText(const vect coords, const char* text, float scale);
 
 /*
 * Function: GLCDDrawTextScaled

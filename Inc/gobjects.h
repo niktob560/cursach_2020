@@ -43,7 +43,7 @@ typedef struct
 				size;
 	isInverted	inverted;
 	char 		text[GOBJECT_TEXT_SIZE];
-	uint8_t 	textScale;
+	float	 	textScale;
 } graph_text;
 
 typedef struct 
@@ -52,8 +52,8 @@ typedef struct
 				size;
 	isFilled	filled;
 	char 		text[GOBJECT_TEXT_SIZE];
-	uint8_t	 	textScale,
-				clickSignal;
+	float	 	textScale;
+	uint8_t		clickSignal;
 } graph_button;
 
 /*

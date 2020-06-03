@@ -266,7 +266,7 @@ static const uint8_t Font8x8[256][8] PROGMEM =
 };
 
 
-void FontScaleUp(uint8_t* target, const char c, const uint8_t scale);
+void FontScaleUp(uint8_t* target, const char c, const float scale);
 
 void FontGetPixmap(uint8_t target[8], const char c);
 
