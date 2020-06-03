@@ -2,7 +2,7 @@
 
 volatile bool touchWannaSwitch = false;
 volatile uint8_t currADCMuxer = 0;
-volatile vect TouchCoords = {0, 0};
+volatile vect TouchCoords = {TOUCH_ADC_ZERO_X, TOUCH_ADC_ZERO_Y};
 
 /*
 *	Function: 	TouchChannels
@@ -46,6 +46,7 @@ void TouchTask(void)
 	if(TouchCoords.a > TOUCH_ADC_ZERO_X || TouchCoords.b > TOUCH_ADC_ZERO_Y)
 	{
 		ClickHandler(TouchCoords);
+		TouchCoords = (vect){TOUCH_ADC_ZERO_X, TOUCH_ADC_ZERO_Y};
 	}
 }
 
