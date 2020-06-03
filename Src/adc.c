@@ -157,6 +157,18 @@ uint16_t ADCGetPin(uint8_t __pin)
 }
 
 /*
+* Function: ADCSetPin
+* Desc:     Установить текущий Muxer
+* Input:    __pin: канал АЦП
+* Output:   none
+*/
+void ADCSetPin(uint8_t __pin)
+{
+	_currPin = __pin;
+	ADCStartConvert();
+}
+
+/*
 * Function: ISR(ADC_vect)
 * Desc:     Обработчик прерывания АЦП
 */
@@ -164,7 +176,7 @@ ISR(ADC_vect)
 {
 	_analogPins[_currPin] = (uint16_t)(ADCL | (ADCH << 8));
 	ADCSetAnalogChanged(_currPin, 1);
-	_currPin++;
+	/*_currPin++;*/
 	if(_currPin >= NUM_OF_ANALOG_PINS)
 	{
 		_currPin = 0;

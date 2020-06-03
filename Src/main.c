@@ -19,6 +19,7 @@ volatile bool tasksRunned[FUNCS_NUM] = {false};
 
 ISR(TIMER0_COMP_vect)
 {
+	TouchChannels();
 	if(funcsArray[currFuncIndex] != NULL)
 	{
 

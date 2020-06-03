@@ -86,6 +86,15 @@ void ADCSetRef(uint8_t __ref);
 bool ADCGetAnalogChanged(uint8_t __pin);
 
 
+/*
+* Function: ADCSetPin
+* Desc:     Установить текущий Muxer
+* Input:    __pin: канал АЦП
+* Output:   none
+*/
+void ADCSetPin(uint8_t __pin);
+
+
 /*================================Настройки================================*/
 
 #define NUM_OF_ANALOG_PINS 	2

@@ -3,11 +3,14 @@
 
 #include <main.h>
 #include <glcd.h>
+#include <adc.h>
 
 #define TOUCH_ADC_ZERO_X 0
 #define TOUCH_ADC_ZERO_Y 0
 #define TOUCH_ADC_MAX_X 1023
 #define TOUCH_ADC_MAX_Y 1023
+#define TOUCH_ADC_MUX_X 0
+#define TOUCH_ADC_MUX_Y 1
 
 
 /*
@@ -42,5 +45,14 @@ static inline vect TouchGetCoords(dvect adc)
 {
 	return (vect){TouchGetX(adc.a), TouchGetY(adc.b)};
 }
+
+
+/*
+*	Function: 	TouchChannels
+*	Desc:		Произвести операции с каналами АЦП
+*	Input:		none
+*	Output:		none
+*/
+void TouchChannels(void);
 
 #endif
