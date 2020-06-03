@@ -8,15 +8,13 @@
 #define GOBJECT_TEXTS 		10
 #define GOBJECT_BUTTONS 	10
 
-void foo(void);
-
 
 extern graph_primitive 	LayoutPrimitives[GOBJECT_PRIMITIVES];
 extern graph_text 		LayoutTexts 	[GOBJECT_TEXTS];
 extern graph_button		LayoutButtons	[GOBJECT_BUTTONS];
 
 
-static const graph_primitive 	LayoutMainmenuPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {0};
+static const graph_primitive 	LayoutMainmenuPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
 static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {0};
 static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
 

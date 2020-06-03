@@ -11,19 +11,37 @@
 #define GOBJECT_TEXT_ARRAY_SIZE 		(5 + GOBJECT_TEXT_SIZE)
 #define GOBJECT_BUTTON_ARRAY_SIZE 		(6 + GOBJECT_TEXT_SIZE)
 
+typedef enum 
+{
+	FILLED,
+	NOT_FILLED
+} isFilled;
+
+typedef enum 
+{
+	BORDERED,
+	NOT_BORDERED
+} isBordered;
+
+typedef enum 
+{
+	INVERTED,
+	NOT_INVERTED
+} isInverted;
+
 typedef struct 
 {
 	vect	 	coords,
 				size;
-	bool 		filled,
-				bordered;
+	isFilled	filled;
+	isBordered	bordered;
 } graph_primitive;
 
 typedef struct 
 {
 	vect 		coords,
 				size;
-	bool		inverted;
+	isInverted	inverted;
 	char 		text[GOBJECT_TEXT_SIZE];
 } graph_text;
 
@@ -31,7 +49,7 @@ typedef struct
 {
 	vect	 	coords,
 				size;
-	bool 		filled;
+	isFilled	filled;
 	char 		text[GOBJECT_TEXT_SIZE];
 	uint8_t	 	clickSignal;
 } graph_button;
