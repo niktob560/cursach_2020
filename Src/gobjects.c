@@ -56,7 +56,7 @@ void GOBJECTDrawText(const graph_text* text)
 */
 void GOBJECTDrawButton(const graph_button* btn)
 {
-	const graph_text txt = {btn->coords, btn->size, btn->filled? INVERTED : NOT_INVERTED, {*btn->text}};
+	const graph_text txt = {btn->coords, btn->size, btn->filled? INVERTED : NOT_INVERTED, {*btn->text}, btn->textScale};
 	GOBJECTDrawText(&txt);
 }
 
