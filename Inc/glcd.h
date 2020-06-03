@@ -81,18 +81,20 @@ void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap);
 * Desc:     Нарисовать символ на текущем полотне
 * Input:    coords: координаты левого верхнего угла символа
 *			c:	символ
+*			scale: масштаб символа
 * Output:   none
 */
-void GLCDDrawSymbol(const vect coords, const char c);
+void GLCDDrawSymbol(const vect coords, const char c, uint8_t scale);
 
 /*
 * Function: GLCDDrawText
 * Desc:     Нарисовать текст на текущем полотне
 * Input:    coords: координаты левого верхнего угла текста
 *			text:	строка
+*			scale: масштаб символов
 * Output:   none
 */
-void GLCDDrawText(const vect coords, const char* text);
+void GLCDDrawText(const vect coords, const char* text, uint8_t scale);
 
 /*
 * Function: GLCDDrawTextScaled

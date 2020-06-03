@@ -45,7 +45,7 @@ void GOBJECTDrawText(const graph_text* text)
 {
 	const graph_primitive primitive = {text->coords, text->size, text->inverted? FILLED : NOT_FILLED, NOT_BORDERED};
 	GOBJECTDrawPrimitive(&primitive);
-	GLCDDrawText(text->coords, text->text);
+	GLCDDrawText(text->coords, text->text, text->textScale);
 }
 
 /*

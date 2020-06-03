@@ -81,12 +81,13 @@ void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap)
 * Desc:     Нарисовать символ на текущем полотне
 * Input:    coords: координаты левого верхнего угла символа
 *			c:	символ
+*			scale: масштаб символа
 * Output:   none
 */
-void GLCDDrawSymbol(const vect coords, const char c)
+void GLCDDrawSymbol(const vect coords, const char c, uint8_t scale)
 {
 	uint8_t pixmap[8];
-	FontGetPixmap(pixmap, c);
+	FontScaleUp(pixmap, c, scale);
 	GLCDDrawPixmap(coords, (const vect){1, 8}, (const uint8_t**)&pixmap);
 }
 
@@ -95,20 +96,21 @@ void GLCDDrawSymbol(const vect coords, const char c)
 * Desc:     Нарисовать текст на текущем полотне
 * Input:    coords: координаты левого верхнего угла текста
 *			text:	строка
+*			scale: масштаб символов
 * Output:   none
 */
-void GLCDDrawText(const vect coords, const char* text)
+void GLCDDrawText(const vect coords, const char* text, uint8_t scale)
 {
 	vect pointerCoords = coords;
 	while(*text)
 	{
-		GLCDDrawSymbol(pointerCoords, *text);
+		GLCDDrawSymbol(pointerCoords, *text, scale);
 		if(*text != '\n')
-			pointerCoords.a = (uint8_t)(pointerCoords.a + 8);
+			pointerCoords.a = (uint8_t)(pointerCoords.a + (8 * scale));
 		else
 		{
 			pointerCoords.a = coords.a;
-			pointerCoords.b = (uint8_t)(pointerCoords.b + 8);
+			pointerCoords.b = (uint8_t)(pointerCoords.b + (10 * scale));
 		}
 		text++;
 	}
