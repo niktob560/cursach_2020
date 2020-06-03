@@ -4,6 +4,7 @@
 #include <main.h>
 #include <glcd.h>
 #include <adc.h>
+#include <layout.h>
 
 #define TOUCH_ADC_ZERO_X 0
 #define TOUCH_ADC_ZERO_Y 0
@@ -54,5 +55,29 @@ static inline vect TouchGetCoords(dvect adc)
 *	Output:		none
 */
 void TouchChannels(void);
+
+/*
+*	Function: 	TouchTask
+*	Desc:		Задача проверки нажатий
+*	Input:		none
+*	Output:		none
+*/
+void TouchTask(void);
+
+/*
+*	Function: 	ClickHandler
+*	Desc:		Обработчик нажатия
+*	Input:		click: координаты нажатия
+*	Output:		none
+*/
+void ClickHandler(vect click);
+
+/*
+*	Function: 	ButtonClickHandler
+*	Desc:		Обработчик нажатий кнопок
+*	Input:		clickCode: код нажатия
+*	Output:		none
+*/
+void ButtonClickHandler(uint8_t clickCode);
 
 #endif
