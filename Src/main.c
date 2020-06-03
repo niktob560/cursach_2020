@@ -7,13 +7,6 @@
 
 #define FUNCS_NUM 10
 
-void a();
-
-
-static inline int b()
-{
-	return 42;
-}
 
 /*Массив ф-ций для вызова*/
 void (*funcsArray[FUNCS_NUM])() = {LayoutDraw};
@@ -127,11 +120,4 @@ void shiftRight(uint8_t* arr, uint32_t len, uint32_t el)
 		arr[len] = arr[len - el];
 		len--;
 	}
-}
-
-
-
-void a()
-{
-	_delay_ns(b());
 }
