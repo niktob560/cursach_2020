@@ -13,20 +13,20 @@
 
 typedef enum 
 {
-	FILLED,
-	NOT_FILLED
+	FILLED = true,
+	NOT_FILLED = false
 } isFilled;
 
 typedef enum 
 {
-	BORDERED,
-	NOT_BORDERED
+	BORDERED = true,
+	NOT_BORDERED = false
 } isBordered;
 
 typedef enum 
 {
-	INVERTED,
-	NOT_INVERTED
+	INVERTED = true,
+	NOT_INVERTED = false
 } isInverted;
 
 typedef struct 

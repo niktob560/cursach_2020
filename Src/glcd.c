@@ -86,7 +86,7 @@ void GLCDDrawPixmap(const vect coords, const vect size, const uint8_t** pixmap)
 void GLCDDrawSymbol(const vect coords, const char c)
 {
 	uint8_t pixmap[8];
-	FontGetPixmap((uint8_t**)&pixmap, c);
+	FontGetPixmap(pixmap, c);
 	GLCDDrawPixmap(coords, (const vect){1, 8}, (const uint8_t**)&pixmap);
 }
 

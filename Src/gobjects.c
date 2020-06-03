@@ -43,7 +43,7 @@ void GOBJECTDrawPrimitive(const graph_primitive* object)
 */
 void GOBJECTDrawText(const graph_text* text)
 {
-	const graph_primitive primitive = {text->coords, text->size, text->inverted, 0};
+	const graph_primitive primitive = {text->coords, text->size, text->inverted? FILLED : NOT_FILLED, NOT_BORDERED};
 	GOBJECTDrawPrimitive(&primitive);
 	GLCDDrawText(text->coords, text->text);
 }
@@ -56,7 +56,7 @@ void GOBJECTDrawText(const graph_text* text)
 */
 void GOBJECTDrawButton(const graph_button* btn)
 {
-	const graph_text txt = {btn->coords, btn->size, btn->filled, {*btn->text}};
+	const graph_text txt = {btn->coords, btn->size, btn->filled? INVERTED : NOT_INVERTED, {*btn->text}};
 	GOBJECTDrawText(&txt);
 }
 
