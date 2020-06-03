@@ -2,6 +2,7 @@
 #define __DS1307_h__ 1
 
 #include <main.h>
+#include <twi.h>
 
 #define DS1307_I2C_ADDR  	0x68
 #define DS1307_SEC_ADDR  	0x00
@@ -12,6 +13,7 @@
 #define DS1307_MONTH_ADDR	0x05
 #define DS1307_YEAR_ADDR 	0x06
 #define DS1307_CONTROL_ADDR 0x07
+#define DS1307_SLAVE_ADDR	0x68
 
 typedef enum
 {
@@ -148,5 +150,46 @@ static inline void DS1307FromDatetime(const datetime DateTime, uint8_t ret[8])
 	ret[5] = DS1307ToMonth(DateTime.month);
 	ret[6] = DS1307ToYear(DateTime.year);
 }
+
+
+/*
+*	Function: 	DS1307RequestData
+*	Desc:		Запросить данные о дате-времени по I2C
+*	Input:		none
+*	Output:		none
+*/
+void DS1307RequestData(void);
+
+/*
+*	Function: 	DS1307GetData
+*	Desc:		Получить текущую дату-время
+*	Input:		none
+*	Output:		дата-время
+*/
+datetime DS1307GetData();
+
+/*
+*	Function: 	DS1307SaveData
+*	Desc:		Соханить данные о дате-времени из I2C
+*	Input:		none
+*	Output:		none
+*/
+void DS1307SaveData();
+
+/*
+*	Function: 	DS1307WriteData
+*	Desc:		Записать новые данные о дате-времени по I2C
+*	Input:		new: новая дата-время
+*	Output:		none
+*/
+void DS1307WriteData(datetime new);
+
+/*
+*	Function: 	DS1307Halted
+*	Desc:		Поднят ли бит CLOCK HALT
+*	Input:		none
+*	Output:		CLOCK HALT
+*/
+bool DS1307Halted(void);
 
 #endif

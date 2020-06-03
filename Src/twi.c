@@ -17,6 +17,28 @@ uint8_t		_twi_status = 0xFF;									/*1 byte*/
 /*																190 here*/
 
 
+
+
+
+
+/*
+*	Function:	TWIGetByte
+*	Desc:		Прочесть байт из буфера ввода (если имеется)
+*	Input:		none
+*	Output:		uint8_t: прочитанный байт (0xFF если нечего читать)
+*/
+uint8_t TWIGetByte(void)
+{
+	if(_twi_in_len > 0)
+	{
+		uint8_t _buf = _twi_in_queue[0];
+		shiftLeft(_twi_in_queue, _twi_in_len--, 1);
+		return _buf;
+	}
+	else
+		return 0xFF;//Нечего читать
+}
+
 /*
 *	Function:	TWIAddPack
 *	Desc:		Добавить пакет в очередь
