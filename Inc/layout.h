@@ -46,16 +46,16 @@ extern graph_button		LayoutButtons	[GOBJECT_BUTTONS];
 
 
 static const graph_primitive 	LayoutMainmenuPrimitives[GOBJECT_PRIMITIVES]PROGMEM = {	{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
-static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {	{{0, 0}, {GLCD_WIDTH, 20}, NOT_INVERTED, "", 2},	/*время*/
-																						{{0, 28}, {GLCD_WIDTH, 10}, NOT_INVERTED, "", 1},	/*день недели*/
-																						{{8, 41}, {GLCD_WIDTH, 15}, NOT_INVERTED, "", 1.5}	/*дата*/
+static const graph_text 		LayoutMainmenuTexts 	[GOBJECT_TEXTS]		PROGMEM = {	{{0, 0}, {GLCD_WIDTH, 20}, NOT_INVERTED, "00:00:00", 2},	/*время*/
+																						{{0, 28}, {GLCD_WIDTH, 10}, NOT_INVERTED, "SAT", 1},	/*день недели*/
+																						{{8, 41}, {GLCD_WIDTH, 15}, NOT_INVERTED, "01.01.2000", 1.5}	/*дата*/
 																						};
 static const graph_button		LayoutMainmenuButtons	[GOBJECT_BUTTONS]	PROGMEM = {0};
 
 static const graph_primitive 	LayoutDateSetPrimitives [GOBJECT_PRIMITIVES]PROGMEM = {	{{0, 0}, {GLCD_WIDTH, GLCD_HEIGHT}, NOT_FILLED, NOT_BORDERED}};
-static const graph_text 		LayoutDateSetTexts 		[GOBJECT_TEXTS]		PROGMEM = {	{{0, 10}, {GLCD_WIDTH, 10}, INVERTED, "", 1},	/*время*/
-																						{{0, 44}, {24, 10}, INVERTED, "", 1},			/*день недели*/
-																						{{48, 44}, {GLCD_WIDTH, 10}, INVERTED, "", 1}	/*дата*/
+static const graph_text 		LayoutDateSetTexts 		[GOBJECT_TEXTS]		PROGMEM = {	{{0, 10}, {GLCD_WIDTH, 10}, INVERTED, "00:00:00", 1},	/*время*/
+																						{{0, 44}, {24, 10}, INVERTED, "SAT", 1},			/*день недели*/
+																						{{48, 44}, {GLCD_WIDTH, 10}, INVERTED, "01.01.2000", 1}	/*дата*/
 																						};
 static const graph_button		LayoutDateSetButtons	[GOBJECT_BUTTONS]	PROGMEM = { {{4, 0}, {8, 10}, FILLED, {2}, 1, 0},		/*часы*/
 																						{{4, 20}, {8, 10}, FILLED, {3}, 1, 1},
