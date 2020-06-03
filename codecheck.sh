@@ -15,4 +15,4 @@ else
     printf '\033[1;34m'
 fi
 
-echo -e "CODE CHECK: \n$INFO\n"$CERT'\033[0m'
+echo -e "CERT CHECK: \n$INFO\n"$CERT'\033[0m'
