@@ -3,6 +3,8 @@
 
 #include <gobjects.h>
 #include <avr/pgmspace.h>
+#include <ds1307.h>
+#include <string.h>
 
 #define GOBJECT_PRIMITIVES 	2
 #define GOBJECT_TEXTS 		5
@@ -122,5 +124,13 @@ static inline void LayoutSetDateSet()
 {
 	LayoutSet(LayoutDateSetPrimitives, LayoutDateSetTexts, LayoutDateSetButtons);
 }
+
+/*
+* Function: TextsTask
+* Desc:     Задача обновления текстов на разметке
+* Input:    none
+* Output:   none
+*/
+void TextsTask(void);
 
 #endif

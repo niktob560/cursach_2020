@@ -5,6 +5,7 @@
 #include <glcd.h>
 #include <adc.h>
 #include <layout.h>
+#include <ds1307.h>
 
 #define TOUCH_ADC_ZERO_X 0
 #define TOUCH_ADC_ZERO_Y 0

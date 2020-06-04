@@ -56,3 +56,28 @@ void LayoutDraw(void)
 	LayoutDrawTexts();
 	LayoutDrawButtons();
 }
+
+
+
+/*
+* Function: TextsTask
+* Desc:     Задача обновления текстов на разметке
+* Input:    none
+* Output:   none
+*/
+void TextsTask(void)
+{
+	datetime dt = DS1307GetData();
+	LayoutTexts[0].text[0] = (char)((dt.hours / 10) + '0');
+	LayoutTexts[0].text[1] = (char)((dt.hours % 10) + '0');
+
+	LayoutTexts[0].text[2] = ':';
+
+	LayoutTexts[0].text[3] = (char)((dt.minutes / 10) + '0');
+	LayoutTexts[0].text[4] = (char)((dt.minutes % 10) + '0');
+
+	LayoutTexts[0].text[5] = ':';
+
+	LayoutTexts[0].text[6] = (char)((dt.seconds / 10) + '0');
+	LayoutTexts[0].text[7] = (char)((dt.seconds % 10) + '0');
+}

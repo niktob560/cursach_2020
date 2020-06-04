@@ -10,7 +10,7 @@
 
 
 /*Массив ф-ций для вызова*/
-void (*funcsArray[FUNCS_NUM])() = {DS1307RequestData, LayoutDraw, DS1307SaveData, TouchTask};
+void (*funcsArray[FUNCS_NUM])() = {DS1307RequestData, LayoutDraw, TextsTask, DS1307SaveData, TouchTask};
 /*Текущая задача*/
 volatile uint8_t currFuncIndex = 0;
 /*Массив флагов для блокировки вызова*/

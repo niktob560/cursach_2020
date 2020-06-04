@@ -143,6 +143,7 @@ void ButtonClickHandler(uint8_t clickCode)
 		}
 		case LAYOUT_BUTTON_SUBMIT:
 		{
+			DS1307WriteData((datetime){0, 0, 0, 0, 0, 0, 0});
 			LayoutSetMainmenu();
 			break;
 		}
