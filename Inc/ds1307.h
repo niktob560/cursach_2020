@@ -26,6 +26,15 @@ typedef enum
 	Saturday 	= 6		/*Суббота*/
 } Day;
 
+static const char DayOfWeekStrings[7][4] = {	"Sun",
+												"Mon",
+												"Tue",
+												"Wen",
+												"Thu",
+												"Fri",
+												"Sat"
+												};
+
 
 /*Ф-ции преобразования в дату-время из регистров, полученных из памяти часов*/
 

@@ -68,6 +68,8 @@ void LayoutDraw(void)
 void TextsTask(void)
 {
 	datetime dt = DS1307GetData();
+
+					/*часы:минуты:секунды*/
 	LayoutTexts[0].text[0] = (char)((dt.hours / 10) + '0');
 	LayoutTexts[0].text[1] = (char)((dt.hours % 10) + '0');
 
@@ -80,4 +82,23 @@ void TextsTask(void)
 
 	LayoutTexts[0].text[6] = (char)((dt.seconds / 10) + '0');
 	LayoutTexts[0].text[7] = (char)((dt.seconds % 10) + '0');
+
+					/*день недели*/
+	memcpy(LayoutTexts[1].text, DayOfWeekStrings[dt.day], 3);
+
+					/*день.месяц.год*/
+	LayoutTexts[2].text[0] = (char)((dt.date / 10) + '0');
+	LayoutTexts[2].text[1] = (char)((dt.date % 10) + '0');
+
+	LayoutTexts[2].text[2] = '.';
+	
+	LayoutTexts[2].text[3] = (char)((dt.month / 10) + '0');
+	LayoutTexts[2].text[4] = (char)((dt.month % 10) + '0');
+
+	LayoutTexts[2].text[5] = '.';
+	
+	LayoutTexts[2].text[6] = '2';
+	LayoutTexts[2].text[7] = (char)((dt.year / 100) + '0');
+	LayoutTexts[2].text[8] = (char)((dt.year / 10) + '0');
+	LayoutTexts[2].text[9] = (char)((dt.year % 10) + '0');
 }
